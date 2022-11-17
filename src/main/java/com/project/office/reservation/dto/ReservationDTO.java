@@ -2,6 +2,7 @@ package com.project.office.reservation.dto;
 
 import java.sql.Date;
 
+import com.project.office.member.dto.MemberDTO;
 import com.project.office.room.dto.RoomDTO;
 
 import lombok.Data;
@@ -16,5 +17,5 @@ public class ReservationDTO {
 	private String reservationPurpose;
 	private String reservationRemoveStatus;
 	private RoomDTO room;
-	//private MemberDTO member;   //memberDTO 없으므로 주석
+	private MemberDTO member;
 }
