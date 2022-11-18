@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,7 @@ public class RoomController {
 		this.roomService = roomService;
 	}
 	
-	/* 1. 회의실 조회 */
+	/* 1. 회의실 조회(회원) */
 	@GetMapping("/rooms")
 	public ResponseEntity<ResponseDTO> selectRoomList(@RequestParam(name= "page", defaultValue="1") int page){
 		log.info("[RoomController] selectRoomList Start ===========");
@@ -49,5 +50,24 @@ public class RoomController {
 		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
+	
+	/* 2. 회의실 상세 조회 */
+	@GetMapping("/rooms/{roomNo}")
+	public ResponseEntity<ResponseDTO> selectRoomDetail(@PathVariable Long roomNo) {
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDTO(HttpStatus.OK, "회의실 상세 정보 조회 성공", roomService.selectRoom(roomNo)));
+	}
+	/* 3. 회의실 조회(관리자) */
+	
+	/* 4. 회의실 등록(관리자) */
+	
+	/* 5. 회의실 수정(관리자) */
+	
+	/* 6. 회의실 삭제(관리자) */
+	
+	
+	
 	
 }

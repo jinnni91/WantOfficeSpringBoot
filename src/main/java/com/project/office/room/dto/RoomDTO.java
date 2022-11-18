@@ -16,5 +16,5 @@ public class RoomDTO {
 	private MultipartFile roomImage;
 	
 	private String roomImageUrl;
-	private Long roomStock;
+	
 }
