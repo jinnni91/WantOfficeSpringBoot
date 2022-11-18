@@ -1,5 +1,7 @@
 package com.project.office.room.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -11,4 +13,8 @@ public class RoomDTO {
 	private Integer roomCapacity;
 	private String roomFileUrl;
 	
+	private MultipartFile roomImage;
+	
+	private String roomImageUrl;
+	private Long roomStock;
 }
