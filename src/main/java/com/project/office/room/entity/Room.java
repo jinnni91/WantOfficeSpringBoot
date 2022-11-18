@@ -40,4 +40,10 @@ public class Room {
 	@Column(name = "ROOM_FILE_URL")
 	private String roomFileUrl;
 	
+	@Column(name = "ROOM_IMAGE_URL")
+	private String roomImageUrl;
+	
+	@Column(name = "ROOM_STOCK")
+	private Long roomStock;
+	
 }
