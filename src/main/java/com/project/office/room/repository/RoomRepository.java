@@ -1,17 +1,28 @@
 package com.project.office.room.repository;
 
+
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.project.office.room.entity.Room;
 
+
+
 public interface RoomRepository extends JpaRepository<Room, Long>{
 
-	/*1. 회의실 조회 */
-	@EntityGraph(attributePaths= {"roomNo"})
-	Page<Room> findByRoomLocation(Pageable pageable, String roomLocation);
+	/* 1. 회의실 조회 (회원) */
+	Page<Room> findAll(Pageable pageable);
+	
+	/* 2. 회의실 상세조회 (회원) */
+	@Query("SELECT r " +
+			 "FROM Room r " +
+			"WHERE r.roomNo = :roomNo " )
+	Optional<Room> findByRoomNo(@Param("roomNo")Long roomNo);
 
 	
 
