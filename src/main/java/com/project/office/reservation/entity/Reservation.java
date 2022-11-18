@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.project.office.member.entity.Member;
 import com.project.office.room.entity.Room;
 
 import lombok.Getter;
@@ -53,8 +54,8 @@ public class Reservation {
 	@JoinColumn(name = "ROOM_NO")
 	private Room room;
 	
-	/*@ManyToOne
+	@ManyToOne
 	@JoinColumn(name = "MEMBER_NO")
-	private Member member;*/
+	private Member member;
 	
 }
