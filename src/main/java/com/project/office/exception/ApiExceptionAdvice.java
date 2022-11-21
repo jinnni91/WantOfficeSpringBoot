@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.project.office.exception.dto.ApiExceptionDTO;
-import com.project.office.member.exception.LoginFailedException;
 
 @RestControllerAdvice
 public class ApiExceptionAdvice {
@@ -23,5 +22,12 @@ public class ApiExceptionAdvice {
 		return ResponseEntity
 				.status(HttpStatus.BAD_REQUEST)
 				.body(new ApiExceptionDTO(HttpStatus.BAD_REQUEST, e.getMessage()));
+	}
+	
+	@ExceptionHandler(TokenException.class)
+	public ResponseEntity<ApiExceptionDTO> exceptionHandler(TokenException e) {
+		return ResponseEntity
+				.status(HttpStatus.UNAUTHORIZED)
+				.body(new ApiExceptionDTO(HttpStatus.UNAUTHORIZED, e.getMessage()));
 	}
 }

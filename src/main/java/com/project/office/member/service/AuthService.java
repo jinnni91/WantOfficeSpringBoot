@@ -7,11 +7,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.office.exception.DuplicatedUsernameException;
+import com.project.office.exception.LoginFailedException;
 import com.project.office.jwt.TokenProvider;
 import com.project.office.member.dto.MemberDTO;
 import com.project.office.member.dto.TokenDTO;
 import com.project.office.member.entity.Member;
-import com.project.office.member.exception.LoginFailedException;
+
 import com.project.office.member.repository.MemberRepository;
 
 import lombok.extern.slf4j.Slf4j;

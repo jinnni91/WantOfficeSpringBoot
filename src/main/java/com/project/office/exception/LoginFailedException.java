@@ -1,4 +1,4 @@
-package com.project.office.member.exception;
+package com.project.office.exception;
 
 public class LoginFailedException extends RuntimeException{
 	

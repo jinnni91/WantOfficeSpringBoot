@@ -28,12 +28,11 @@ public class MemberDTO implements UserDetails {
 	private String memberFileUrl;
 	private AuthDTO authNo;
 
-	// security 인증, 인가
+		// security 인증, 인가
 		private Collection<? extends GrantedAuthority> authorities;
 		
 		@Override
 		public Collection<? extends GrantedAuthority> getAuthorities() {
-		
 			return authorities;
 		}
 
