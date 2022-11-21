@@ -1,9 +1,11 @@
 package com.project.office.reservation.dto;
 
-import java.sql.Date;
+import java.util.Date;
 
-import com.project.office.member.dto.MemberDTO;
-import com.project.office.room.dto.RoomDTO;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.project.office.member.entity.Member;
+import com.project.office.room.entity.Room;
 
 import lombok.Data;
 
@@ -16,6 +18,11 @@ public class ReservationDTO {
 	private String reservationStatus;
 	private String reservationPurpose;
 	private String reservationRemoveStatus;
-	private RoomDTO room;
-	private MemberDTO member;
+	private Room room;
+	private Member member;
+	
+	private MultipartFile roomImage;
+	
+	private String roomImageUrl;
+	
 }

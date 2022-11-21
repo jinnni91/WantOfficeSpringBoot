@@ -25,5 +25,5 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 	Optional<Room> findByRoomNo(@Param("roomNo")Long roomNo);
 
 	
-
+	/* 3.  */
 }
