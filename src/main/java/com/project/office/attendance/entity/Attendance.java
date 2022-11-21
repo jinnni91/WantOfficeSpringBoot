@@ -1,5 +1,7 @@
 package com.project.office.attendance.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,11 +12,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.project.office.member.entity.Member;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
+
+@ToString
 
 @Getter
 @Setter
@@ -24,6 +33,8 @@ import lombok.Setter;
 @SequenceGenerator(name = "ATT_SEQ_GENERATOR",
 		sequenceName = "SEQ_ATT_NO",
 		initialValue = 1, allocationSize = 1)
+@DynamicInsert
+@DynamicUpdate
 public class Attendance {
 	
 	@Id
@@ -32,13 +43,13 @@ public class Attendance {
 	private Long attNo;
 	
 	@Column(name = "ATT_IN")
-	private java.util.Date attIn;
+	private LocalDateTime attIn;
 	
 	@Column(name = "ATT_OUT")
-	private java.util.Date attOut;
+	private LocalDateTime attOut;
 	
 	@Column(name = "ATT_DATE")
-	private java.util.Date attDate;
+	private String attDate;
 	
 	@Column(name = "ATT_TYPE")
 	private String attType;
@@ -49,5 +60,6 @@ public class Attendance {
 	@ManyToOne
 	@JoinColumn(name = "MEMBER_NO")
 	private Member member;
+	
 
 }

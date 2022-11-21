@@ -1,12 +1,16 @@
 package com.project.office.attendance.service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.project.office.attendance.dto.AttendanceDTO;
@@ -27,25 +31,12 @@ public class AttendanceService {
 		this.modelMapper = modelMapper;
 	}
 	
+	/* 출근 등록 */
 	@Transactional
 	public AttendanceDTO insertAttIn(AttendanceDTO attendanceDTO) throws ParseException {
 		
 		log.info("[AttendanceService] insertAttIn Start ====================");
 		log.info("[AttendanceService] attendanceDTO : {}", attendanceDTO);
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("HH24:MI:SS");
-		Date attIn = attendanceDTO.getAttIn();
-		Date tardy = sdf.parse("09:30:00");
-		
-		if (attIn.compareTo(tardy) > 0) {
-	        log.info("[AttendanceService] 지각, 출근시간 : {}", attIn);
-	        attendanceDTO.setAttType("지각");
-	        
-	    } else if(attIn.compareTo(tardy) < 0) {
-	    	log.info("[AttendanceService] 정상, 출근시간 : {}", attIn);
-	    	attendanceDTO.setAttType("정상");
-	    	
-	    }
 		
 		attendanceRepository.save(modelMapper.map(attendanceDTO, Attendance.class));
 		
@@ -55,31 +46,66 @@ public class AttendanceService {
 		
 	}
 
+	/* 퇴근 등록 */
 	@Transactional
-	public AttendanceDTO insertAttOut(AttendanceDTO attendanceDTO) throws ParseException {
+	public AttendanceDTO insertAttOut(AttendanceDTO attendanceDTO,LocalDateTime now) throws ParseException {
 		
 		log.info("[AttendanceService] insertAttOut Start ====================");
 		log.info("[AttendanceService] attendanceDTO : {}", attendanceDTO);
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("HH24:MI:SS");
-		Date attOut = attendanceDTO.getAttOut();
-		Date leaveEarly = sdf.parse("17:00:00");
+		// LocalDateTime 타입으로 비교
+		LocalDateTime today = LocalDateTime.now();
+		LocalDateTime start = LocalDate.now().atStartOfDay();
 		
-		if (attOut.compareTo(leaveEarly) > 0) {
-	        log.info("[AttendanceService] 정상, 퇴근시간 : {}", attOut);
-	        attendanceDTO.setAttType("정상");
-	        
-	    } else if(attOut.compareTo(leaveEarly) < 0) {
-	    	log.info("[AttendanceService] 조퇴, 퇴근시간 : {}", attOut);
-	    	attendanceDTO.setAttType("조퇴");
-	    	
-	    }
+		// Member와 오늘 날짜로 출근 찍힌 행 기준으로 조회
+		Attendance oriAttendance = attendanceRepository.findByMemberAndAttDate(today, start, attendanceDTO.getMember().getMemberNo())
+				.orElseThrow(() -> new RuntimeException(""));
 		
-		attendanceRepository.save(modelMapper.map(attendanceDTO, Attendance.class));
+		oriAttendance.setAttOut(now);
+		log.info("[AttendanceService] oriAttendance : {}", oriAttendance);
+		log.info("[AttendanceService] setAttOut : {}", oriAttendance.getAttOut());
+		
+		attendanceRepository.save(oriAttendance);
 		
 		log.info("[AttendanceService] insertAttOut End ====================");
 		
-		return attendanceDTO;
+		return modelMapper.map(oriAttendance, AttendanceDTO.class);
+		
+	}
+
+	/* 내 근태 월별 목록 조회 */
+	public Page<AttendanceDTO> getMyAttList(int page, Long memberNo, String attDate) {
+		
+		log.info("[AttendanceService] getMyAttList Start ====================");
+		
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("attDate").descending());
+		
+		Page<Attendance> attendanceList = attendanceRepository.findByMemberNoAndAttDate(pageable, memberNo, attDate);
+		Page<AttendanceDTO> attendanceDTOList = attendanceList.map(attendance -> modelMapper.map(attendance, AttendanceDTO.class));
+		
+		log.info("[AttendanceService] attendanceDTOList : {}, attendanceDTOList");
+		
+		log.info("[AttendanceService] getMyAttList Start ====================");
+		
+		return attendanceDTOList;
+		
+	}
+
+	/* 날짜별 근태 목록 조회(관리자) */
+	public Page<AttendanceDTO> getAttListForAdmin(int page, String attDate) {
+		
+		log.info("[AttendanceService] getAttListForAdmin Start ====================");
+		
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("member").ascending());
+		
+		Page<Attendance> attendanceList = attendanceRepository.findByAttDate(pageable, attDate);
+		Page<AttendanceDTO> attendanceDTOList = attendanceList.map(attendance -> modelMapper.map(attendance, AttendanceDTO.class));
+		
+		log.info("[AttendanceService] attendanceDTOList : {}, attendanceDTOList");
+		
+		log.info("[AttendanceService] getAttListForAdmin End ====================");
+		
+		return attendanceDTOList;
 		
 	}
 

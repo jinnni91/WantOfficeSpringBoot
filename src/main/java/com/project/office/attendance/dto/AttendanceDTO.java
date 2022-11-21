@@ -1,5 +1,7 @@
 package com.project.office.attendance.dto;
 
+import java.time.LocalDateTime;
+
 import com.project.office.member.dto.MemberDTO;
 
 import lombok.Data;
@@ -8,11 +10,11 @@ import lombok.Data;
 public class AttendanceDTO {
 	
 	private Long attNo;
-	private java.util.Date attIn;
-	private java.util.Date attOut;
-	private java.util.Date attDate;
+	private LocalDateTime attIn;
+	private LocalDateTime attOut;
+	private String attDate;
 	private String attType;
 	private Long attTime;
 	private MemberDTO member;
-
+      
 }
