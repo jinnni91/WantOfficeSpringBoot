@@ -1,6 +1,6 @@
 package com.project.office.notice.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,6 +34,11 @@ public class Notice {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "NOTICE_SEQ_GENERATOR")
 	private Long noticeNo;
 	
+	
+	@ManyToOne
+	@JoinColumn(name = "MEMBER_NO") // MEMBER_ID 에서 MEMBER_NO로 변경 
+	private Member memberNo;
+	
 	@Column(name = "NOTICE_TITLE")
 	private String noticeTitle;
 	
@@ -56,11 +61,8 @@ public class Notice {
 	private String noticeType;
 	
 	@ManyToOne
-	@JoinColumn(name = "MEMBER_ID")
-	private Member memberId;
-	
-	@ManyToOne
 	@JoinColumn(name = "DEPT_NO")
-	private Dept deptNo;
+	private Dept dept;
+
 	
 }
