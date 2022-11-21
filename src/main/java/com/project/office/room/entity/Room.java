@@ -40,5 +40,12 @@ public class Room {
 	@Column(name = "ROOM_FILE_URL")
 	private String roomFileUrl;
 	
-	
+	// 수정 용도 메소드 
+	public void update(String roomName, String roomLocation, Integer roomCapacity,
+			String roomFileUrl) {
+		this.roomName = roomName;
+		this.roomLocation = roomLocation;
+		this.roomCapacity = roomCapacity;
+		this.roomFileUrl = roomFileUrl;
+	}
 }
