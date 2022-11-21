@@ -51,7 +51,7 @@ public class RoomController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDTOWithPaging));
 	}
 	
-	/* 2. 회의실 상세 조회 */
+	/* 2. 회의실 상세 조회(회원) */
 	@GetMapping("/rooms/{roomNo}")
 	public ResponseEntity<ResponseDTO> selectRoomDetail(@PathVariable Long roomNo) {
 		

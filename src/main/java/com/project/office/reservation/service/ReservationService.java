@@ -1,5 +1,134 @@
 package com.project.office.reservation.service;
 
+import java.sql.Date;
+
+import javax.transaction.Transactional;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import com.project.office.reservation.dto.ReservationDTO;
+import com.project.office.reservation.entity.Reservation;
+import com.project.office.reservation.repository.ReservationRepository;
+import com.project.office.room.dto.RoomDTO;
+import com.project.office.room.entity.Room;
+import com.project.office.room.repository.RoomRepository;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
 public class ReservationService {
+
+	private final ReservationRepository reservationRepository;
+	private final ModelMapper modelMapper;
+	
+	public ReservationService(ReservationRepository reservationRepository, ModelMapper modelMapper) {
+		this.reservationRepository = reservationRepository;
+		this.modelMapper = modelMapper;
+	}
+	
+	@Value("${image.image-dir}")
+	private String IMAGE_DIR;
+	@Value("${image.image-url}")
+	private String IMAGE_URL;
+	
+	/* 1. 회의실 예약 전체 목록 조회(회원) */
+	public Page<ReservationDTO> selectReservationList(int page) {
+		log.info("[ReservationService] selectReservationList start============");
+		
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("reservationNo").descending());
+		
+		Page<Reservation> reservationList = reservationRepository.findAll(pageable);
+		Page<ReservationDTO> reservationDTOList = reservationList.map(reservation -> modelMapper.map(reservation, ReservationDTO.class));
+		
+		
+		log.info("[ReservationService] reservationDTOList : {}", reservationDTOList.getContent());
+		log.info("[ReservationService] selectReservationList End============");
+		
+		return reservationDTOList;
+	}
+	
+	/* 1-1. 예약 목록 조회 - 검색[예약중 / 예약 가능/ 예약 취소]*/
+	public Page<ReservationDTO> selectReservationListByReservationStatus(int page, String reservationStatus) {
+		log.info("[ReservationService] selectReservationListByReservationDate start============");
+		
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("reservationNo").descending());
+		
+		Page<Reservation> reservationList = reservationRepository.findByReservationStatus(pageable, reservationStatus );
+		Page<ReservationDTO> reservationDTOList = reservationList.map(reservation -> modelMapper.map(reservation, ReservationDTO.class));
+		
+		log.info("[ReservationService] ReservationDTOList : {}", reservationDTOList.getContent());
+		
+		log.info("[ReservationService] selectReservationListByReservationDate end ============");
+		
+		return reservationDTOList;
+	}
+	
+	/* 2. 회의실 예약 상세 조회(회원)*/
+	public ReservationDTO selectReservation(Long reservationNo) {
+		log.info("[ReservationService] selectReservation start============");
+		log.info("[ReservationService] reservationNo : {}", reservationNo);
+		
+		Reservation reservation = reservationRepository.findByReservationNo(reservationNo)
+				.orElseThrow(() -> new IllegalArgumentException("해당 예약사항이 없습니다. reservationNo=" + reservationNo));
+		
+		ReservationDTO reservationDTO = modelMapper.map(reservation, ReservationDTO.class);
+		reservationDTO.setRoomImageUrl(IMAGE_URL + reservationDTO.getRoomImageUrl());
+		
+		log.info("[ReservationService] reservationDTO : {}", reservationDTO);
+		
+		log.info("[ReservationService] selectReservation End============");
+		return reservationDTO;
+	}
+
+	/* 3. 회의실 예약 등록 (회원) */
+	@Transactional
+	public ReservationDTO insertReservation(ReservationDTO reservationDTO) {
+		log.info("[ReservationService] insertReservation start============");
+		log.info("[ReservationService] reservationDTO : {}",reservationDTO );
+		
+		log.info("[ReservationService] insertReservation End============");
+		return reservationDTO;
+	}
+	
+	/* 4. 회의실 예약 수정 (회원) */
+	@Transactional
+	public ReservationDTO updateReservation(ReservationDTO reservationDTO) {
+		log.info("[ReservationService] updateReservation start============");
+		log.info("[ReservationService] reservationDTO : {}", reservationDTO);
+		
+		
+		Reservation oriReservation = reservationRepository.findById(reservationDTO.getReservationNo()).orElseThrow(
+					() -> new IllegalArgumentException("해당 예약 목록이 없습니다. reservationNo =" + reservationDTO.getReservationNo()));
+			
+		oriReservation.update(reservationDTO.getReservationNo(),
+				reservationDTO.getReservationTime(),
+				reservationDTO.getReservationStatus(),
+				reservationDTO.getReservationPurpose(),
+				reservationDTO.getRoom(),
+				reservationDTO.getMember());
+		reservationRepository.save(oriReservation);
+		
+		log.info("[ReservationService] updateReservation End============");
+		
+		return reservationDTO;
+	}
+
+	
+
+
+	
+
+	
+
+	
+	
+	
 
 }

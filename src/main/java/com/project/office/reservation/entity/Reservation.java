@@ -12,7 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.project.office.member.dto.MemberDTO;
 import com.project.office.member.entity.Member;
+import com.project.office.room.dto.RoomDTO;
 import com.project.office.room.entity.Room;
 
 import lombok.Getter;
@@ -57,5 +59,20 @@ public class Reservation {
 	@ManyToOne
 	@JoinColumn(name = "MEMBER_NO")
 	private Member member;
+
+	public void update(Long reservationNo, Integer reservationTime, String reservationStatus,
+			String reservationPurpose, Room room, Member member) {
+		
+		this.reservationNo = reservationNo;
+		this.reservationTime = reservationTime;
+		this.reservationStatus = reservationStatus;
+		this.reservationPurpose = reservationPurpose;
+		this.room = room;
+		this.member = member;
+		
+	}
+
+		
+	
 	
 }
