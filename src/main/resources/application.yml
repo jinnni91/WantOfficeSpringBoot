@@ -42,3 +42,7 @@ file:
   # Service에 세팅
   file-dir: src/main/resources/static/wantfiles
   file-url: http://localhost:8001/wantfiles/
+  
+# Secret key
+jwt:
+  secret: asdfjp298pafo1320efqw0udvnh0er0h412r08byfdq9dsvh02143908hfeqwn80fdqs0nfdqs0n412013rq0nqefn08dfas0das730732g86923
