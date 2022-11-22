@@ -14,7 +14,7 @@ public class AttendanceDTO {
 	private LocalDateTime attOut;
 	private String attDate;
 	private String attType;
-	private Long attTime;
+	private String attTime;
 	private MemberDTO member;
       
 }

@@ -1,8 +1,10 @@
 package com.project.office.attendance.service;
 
 import java.text.ParseException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.YearMonth;
 
 import javax.transaction.Transactional;
@@ -47,6 +49,31 @@ public class AttendanceService {
 		return attendanceDTO;
 		
 	}
+	
+	/* 출근 조회 */
+	public String selectAttIn(MemberDTO member) {
+		
+		log.info("[AttendanceService] selectAttIn Start ====================");
+		log.info("[AttendanceService] member : {}", member);
+		
+		Long memberNo = member.getMemberNo();
+		
+		LocalDateTime today = LocalDateTime.now();
+		LocalDateTime start = LocalDate.now().atStartOfDay();
+		
+		Attendance attendance = attendanceRepository.findByMemberAndAttIn(today, start, memberNo)
+				.orElseThrow(() -> new RuntimeException("오늘 출근 시간이 존재하지 않습니다."));
+		
+		LocalDateTime attIn = attendance.getAttIn();
+		
+		String attInString = attIn.toString();
+		String str = attInString.substring(11, 16);
+		
+		log.info("[AttendanceService] selectAttIn End ====================");
+		
+		return str;
+		
+	}
 
 	/* 퇴근 등록 */
 	@Transactional
@@ -64,6 +91,36 @@ public class AttendanceService {
 				.orElseThrow(() -> new RuntimeException("오늘 출근 시간이 존재하지 않습니다."));
 		
 		oriAttendance.setAttOut(now);
+		
+		// 출근 시간과 퇴근 시간
+		LocalDateTime In = oriAttendance.getAttIn();
+		LocalDateTime Out = oriAttendance.getAttOut();
+		
+		int InHour = In.getHour();
+		int InMinute = In.getMinute();
+		
+		int OutHour = Out.getHour();
+		int OutMinute = Out.getMinute();
+		
+		// 출근 시간과 퇴근 시간 차이로 근무시간 구하기
+		Duration duration = Duration.between(In, Out);
+		Long time = duration.getSeconds();
+		Long hour = time/(60*60);
+		Long minute = time/60;
+		
+		String attTime = (hour + "시간 " + minute + "분");
+		
+		oriAttendance.setAttTime(attTime);
+		
+		// 출근 시간과 퇴근 시간으로 근무유형 구하기
+		if(In != null && now != null && InHour <= 9 && InMinute < 30 && OutHour >= 17 && OutMinute >= 1) {
+			oriAttendance.setAttType("정상출근");
+		} else if(In != null && now != null && InHour > 9 && InMinute >= 30) {
+			oriAttendance.setAttType("지각");
+		} else if(In != null && now != null && OutHour <= 17 && OutMinute < 1) {
+			oriAttendance.setAttType("조퇴");
+		}
+		
 		log.info("[AttendanceService] oriAttendance : {}", oriAttendance);
 		log.info("[AttendanceService] setAttOut : {}", oriAttendance.getAttOut());
 		
@@ -72,6 +129,32 @@ public class AttendanceService {
 		log.info("[AttendanceService] insertAttOut End ====================");
 		
 		return modelMapper.map(oriAttendance, AttendanceDTO.class);
+		
+	}
+	
+	/* 퇴근 조회 */
+	public String selectAttOut(MemberDTO member) {
+		
+		log.info("[AttendanceService] selectAttOut Start ====================");
+		log.info("[AttendanceService] member : {}", member);
+		
+		Long memberNo = member.getMemberNo();
+		
+		LocalDateTime start = LocalDate.now().atStartOfDay();
+		LocalDateTime end = LocalDateTime.now().with(LocalTime.MAX);
+		
+		Attendance attendance = attendanceRepository.findByMemberAndAttOut(start, end, memberNo)
+				.orElseThrow(() -> new RuntimeException("오늘 출근 시간이 존재하지 않습니다."));
+		
+		LocalDateTime attOut = attendance.getAttOut();
+		
+		String attOutString = attOut.toString();
+		String str = attOutString.substring(11, 16);
+		
+		log.info("[AttendanceService] str : {}", str);
+		log.info("[AttendanceService] selectAttOut Out ====================");
+		
+		return str;
 		
 	}
 
@@ -122,5 +205,6 @@ public class AttendanceService {
 		return attendanceDTOList;
 		
 	}
+
 
 }
