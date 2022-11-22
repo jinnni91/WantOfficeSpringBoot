@@ -5,6 +5,7 @@ import java.sql.Date;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,7 +57,7 @@ public class ReservationController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 리스트 조회 성공", responseDTOWithPaging));
 	}
 	
-	/* 1-1. 예약 목록 조회 - 검색[예약중 / 예약 가능/ 예약 취소]*/
+	/* 2. 예약 목록 조회 - 검색[예약중 / 예약 가능/ 예약 취소]*/
 	@GetMapping("/rvlists/search")
 	public ResponseEntity<ResponseDTO> selectSearchList(@RequestParam(name= "page", defaultValue="1")int page, @RequestParam(name="search") String reservationStatus){
 		log.info("[ReservationController] selectSearchList start ============ ");
@@ -77,7 +78,7 @@ public class ReservationController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 리스트 조회 성공", responseDTOWithPaging));
 	}
 	
-	/* 2. 예약 상세 조회(공통) */
+	/* 3. 예약 상세 조회(공통) */
 	@GetMapping("/rvlists/{reservationNo}")
 	public ResponseEntity<ResponseDTO> selectReservationDetail(@PathVariable Long reservationNo) {
 		
@@ -86,18 +87,58 @@ public class ReservationController {
 				.body(new ResponseDTO(HttpStatus.OK, "예약 정보 상세 조회 성공", reservationService.selectReservation(reservationNo)));
 	}
 	
-	/* 3. 예약 등록 (고객) */
+	/* 4. 예약 등록 (회원) */
 	@PostMapping("/rvlists")
 	public ResponseEntity<ResponseDTO> insertReservation(@ModelAttribute ReservationDTO reservationDTO) {
 		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 등록 성공", reservationService.insertReservation(reservationDTO)));
 	}
 	
-	/* 4. 예약 수정 (회원) */
+	/* 5. 예약 수정 (회원) */
 	@PutMapping("/rvlists")
 	public ResponseEntity<ResponseDTO> updateReservation(@ModelAttribute ReservationDTO reservationDTO) {
 		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 수정 성공", reservationService.updateReservation(reservationDTO)));
 	}
 	
+	/* 6. 예약 목록 전체 조회(관리자) */
+	@GetMapping("/rvlist-managements")
+	public ResponseEntity<ResponseDTO> selectReservationListForAdmin(@RequestParam(name= "page", defaultValue="1")int page){
+		log.info("[ReservationController] selectReservationList start ==============");
+		log.info("[ReservationController] page : {}", page);
+		
+		Page<ReservationDTO> reservationDTOList = reservationService.selectReservationListForAdmin(page);
+		
+		PagingButton pageBtn = pagenation.getPagingButton(reservationDTOList);
+		
+		log.info("[ReservationController] pageBtn : {}", pageBtn);
+		
+		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+		responseDTOWithPaging.setPageBtn(pageBtn);
+		responseDTOWithPaging.setData(reservationDTOList.getContent());
+		
+		log.info("[ReservationController] selectReservationList End ==============");
+		
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 리스트 조회 성공", responseDTOWithPaging));
+	}
+	
+	/* 7. 예약 상세 조회(관리자) */
+	@GetMapping("/rvlist-managements/{reservationNo}")
+	public ResponseEntity<ResponseDTO> selectReservationDetailForAdmin(@PathVariable Long reservationNo) {
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDTO(HttpStatus.OK, "예약 정보 상세 조회 성공", reservationService.selectReservationForAdmin(reservationNo)));
+	}
+	
+	/* 8. 예약 리스트 취소(삭제 - 관리자) */
+	@DeleteMapping("/rvlist-managements/{reservationNo}")
+	public ResponseEntity<ResponseDTO> deleteReservationForAdmin(@PathVariable Long reservationNo) {
+		
+		reservationService.deleteReservationForAdmin(reservationNo);
+		
+		return ResponseEntity
+				.noContent()
+				.build();
+	}
 }

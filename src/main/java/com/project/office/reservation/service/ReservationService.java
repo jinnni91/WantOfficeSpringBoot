@@ -54,7 +54,7 @@ public class ReservationService {
 		return reservationDTOList;
 	}
 	
-	/* 1-1. 예약 목록 조회 - 검색[예약중 / 예약 가능/ 예약 취소]*/
+	/* 2. 예약 목록 조회 - 검색[예약중 / 예약 가능/ 예약 취소]*/
 	public Page<ReservationDTO> selectReservationListByReservationStatus(int page, String reservationStatus) {
 		log.info("[ReservationService] selectReservationListByReservationDate start============");
 		
@@ -70,7 +70,7 @@ public class ReservationService {
 		return reservationDTOList;
 	}
 	
-	/* 2. 회의실 예약 상세 조회(회원)*/
+	/* 3. 회의실 예약 상세 조회(회원)*/
 	public ReservationDTO selectReservation(Long reservationNo) {
 		log.info("[ReservationService] selectReservation start============");
 		log.info("[ReservationService] reservationNo : {}", reservationNo);
@@ -87,7 +87,7 @@ public class ReservationService {
 		return reservationDTO;
 	}
 
-	/* 3. 회의실 예약 등록 (회원) */
+	/* 4. 회의실 예약 등록 (회원) */
 	@Transactional
 	public ReservationDTO insertReservation(ReservationDTO reservationDTO) {
 		log.info("[ReservationService] insertReservation start============");
@@ -97,7 +97,7 @@ public class ReservationService {
 		return reservationDTO;
 	}
 	
-	/* 4. 회의실 예약 수정 (회원) */
+	/* 5. 회의실 예약 수정 (회원) */
 	@Transactional
 	public ReservationDTO updateReservation(ReservationDTO reservationDTO) {
 		log.info("[ReservationService] updateReservation start============");
@@ -120,11 +120,45 @@ public class ReservationService {
 		return reservationDTO;
 	}
 
+	/* 6. 회의실 예약 전체 목록 조회(관리자) */
+	public Page<ReservationDTO> selectReservationListForAdmin(int page) {
+		log.info("[ReservationService] selectReservationList start============");
+		
+		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("reservationNo").descending());
+		
+		Page<Reservation> reservationList = reservationRepository.findAll(pageable);
+		Page<ReservationDTO> reservationDTOList = reservationList.map(reservation -> modelMapper.map(reservation, ReservationDTO.class));
+		
+		
+		log.info("[ReservationService] reservationDTOList : {}", reservationDTOList.getContent());
+		log.info("[ReservationService] selectReservationList End============");
+		
+		return reservationDTOList;
+	}
+
+	/* 7. 회의실 예약 상세 조회(관리자)*/
+	public ReservationDTO selectReservationForAdmin(Long reservationNo) {
+		log.info("[ReservationService] selectReservation start============");
+		log.info("[ReservationService] reservationNo : {}", reservationNo);
+		
+		Reservation reservation = reservationRepository.findByReservationNo(reservationNo)
+				.orElseThrow(() -> new IllegalArgumentException("해당 예약사항이 없습니다. reservationNo=" + reservationNo));
+		
+		ReservationDTO reservationDTO = modelMapper.map(reservation, ReservationDTO.class);
+		reservationDTO.setRoomImageUrl(IMAGE_URL + reservationDTO.getRoomImageUrl());
+		
+		log.info("[ReservationService] reservationDTO : {}", reservationDTO);
+		
+		log.info("[ReservationService] selectReservation End============");
+		return reservationDTO;
+	}
 	
-
-
-	
-
+	/* 8. 회의실 취소/삭제(관리자) */
+	public void deleteReservationForAdmin(Long reservationNo) {
+		Reservation deleteReservation = reservationRepository.findById(reservationNo).get();
+		reservationRepository.delete(deleteReservation);
+		
+	}
 	
 
 	
