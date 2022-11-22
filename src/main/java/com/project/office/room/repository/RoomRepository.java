@@ -18,15 +18,11 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 	/* 1. 회의실 조회 (회원)/ 3. 회의실 조회(관리자) */
 	Page<Room> findAll(Pageable pageable);
 	
-	/* 2. 회의실 상세조회 (회원) */
+	/* 2. 회의실 상세조회 (회원) / 4. 회의실 상세 조회(관리자) */
 	@Query("SELECT r " +
 			 "FROM Room r " +
 			"WHERE r.roomNo = :roomNo " )
 	Optional<Room> findByRoomNo(@Param("roomNo")Long roomNo);
 
-	
-	/*  */
-	
-	/* 4. 회의실 상세 조회(관리자) */
 	
 }
