@@ -6,11 +6,10 @@ import java.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,10 +37,10 @@ public class AttendanceController {
 	
 	//출근 등록
 	@PostMapping("/attendance/in")
-	public ResponseEntity<ResponseDTO> insertAttIn(@RequestBody MemberDTO member/*@AuthenticationPrincipal MemberDTO member*/) throws ParseException {
+	public ResponseEntity<ResponseDTO> insertAttIn(@AuthenticationPrincipal MemberDTO member) throws ParseException {
 		
 		log.info("[AttendanceController] insertAttIn Start ====================");
-		//log.info("[AttendanceController] member : {}", member);
+		log.info("[AttendanceController] member : {}", member);
 		
 		AttendanceDTO attendanceDTO = new AttendanceDTO();
 		
@@ -60,19 +59,30 @@ public class AttendanceController {
 	
 	/* 퇴근 등록 */
 	@PatchMapping("/attendance/out")
-	public ResponseEntity<ResponseDTO> insertAttOut(MemberDTO member /*@AuthenticationPrincipal MemberDTO member*/) throws ParseException {
+	public ResponseEntity<ResponseDTO> insertAttOut(@AuthenticationPrincipal MemberDTO member) throws ParseException {
 		
 		log.info("[AttendanceController] insertAttOut Start ====================");
-		
-		// 나중에 로그인 한 상태로 처리해서 삭제할 코드
-		member.setMemberNo(2L);
 		
 		AttendanceDTO attendanceDTO = new AttendanceDTO();
 		
 		LocalDateTime now = LocalDateTime.now();
+//		int OutHour = now.getHour();
+//		int OutMinute = now.getMinute();
 		
 		attendanceDTO.setMember(member);
 		attendanceDTO.setAttOut(now);
+		
+//		LocalDateTime attIn = attendanceDTO.getAttIn();
+//		int InHour = attIn.getHour();
+//		int InMinute = attIn.getMinute();
+//		
+//		if(attIn != null && now != null && InHour <= 9 && InMinute < 30 && OutHour >= 17 && OutMinute >= 1) {
+//			attendanceDTO.setAttType("정상출근");
+//		} else if(attIn != null && now != null && InHour > 9 && InMinute >= 30) {
+//			attendanceDTO.setAttType("지각");
+//		} else if(attIn != null && now != null && OutHour <= 17 && OutMinute < 1) {
+//			attendanceDTO.setAttType("조퇴");
+//		}
 		
 		log.info("[AttendanceController] insertAttOut End ====================");
 		
@@ -83,15 +93,14 @@ public class AttendanceController {
 	}
 	
 	/* 내 근태 월별 목록 조회 */
-	@GetMapping("/attendance/{memberNo}")
+	@GetMapping("/attendance/my")
 	public ResponseEntity<ResponseDTO> getMyAttList
-		(@RequestParam(name="page", defaultValue="1") int page, @PathVariable Long memberNo, @RequestParam(name="search") String attDate) {
+		(@AuthenticationPrincipal MemberDTO member, @RequestParam(name="page", defaultValue="1") int page, @RequestParam(name="search") String attDate) {
 		
 		log.info("[AttendanceController] getMyAttList Start =====================");
 		log.info("[AttendanceController] page : {}", page);
-		log.info("[AttendanceController] memberNo : {}", memberNo);
 		
-		Page<AttendanceDTO> attendanceDTOList = attendanceService.getMyAttList(page, memberNo, attDate);
+		Page<AttendanceDTO> attendanceDTOList = attendanceService.getMyAttList(member, page, attDate);
 		
 		PagingButton pageInfo = pagenation.getPagingButton(attendanceDTOList);
 		
