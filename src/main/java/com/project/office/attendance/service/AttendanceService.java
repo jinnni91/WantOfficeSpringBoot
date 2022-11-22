@@ -3,6 +3,7 @@ package com.project.office.attendance.service;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 
 import javax.transaction.Transactional;
 
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.project.office.attendance.dto.AttendanceDTO;
 import com.project.office.attendance.entity.Attendance;
 import com.project.office.attendance.repository.AttendanceRepository;
+import com.project.office.member.dto.MemberDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -58,8 +60,8 @@ public class AttendanceService {
 		LocalDateTime start = LocalDate.now().atStartOfDay();
 		
 		// Member와 오늘 날짜로 출근 찍힌 행 기준으로 조회
-		Attendance oriAttendance = attendanceRepository.findByMemberAndAttDate(today, start, attendanceDTO.getMember().getMemberNo())
-				.orElseThrow(() -> new RuntimeException(""));
+		Attendance oriAttendance = attendanceRepository.findByMemberAndAttIn(today, start, attendanceDTO.getMember().getMemberNo())
+				.orElseThrow(() -> new RuntimeException("오늘 출근 시간이 존재하지 않습니다."));
 		
 		oriAttendance.setAttOut(now);
 		log.info("[AttendanceService] oriAttendance : {}", oriAttendance);
@@ -74,18 +76,30 @@ public class AttendanceService {
 	}
 
 	/* 내 근태 월별 목록 조회 */
-	public Page<AttendanceDTO> getMyAttList(int page, Long memberNo, String attDate) {
+	public Page<AttendanceDTO> getMyAttList(MemberDTO member, int page, String attDate) {
 		
 		log.info("[AttendanceService] getMyAttList Start ====================");
 		
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("attDate").descending());
 		
-		Page<Attendance> attendanceList = attendanceRepository.findByMemberNoAndAttDate(pageable, memberNo, attDate);
+		Long memberNo = member.getMemberNo();
+		
+		LocalDate date = LocalDate.parse(attDate);
+		YearMonth month = YearMonth.from(date);
+		
+		LocalDate firstDate = month.atDay(1);
+		LocalDate lastDate = month.atEndOfMonth();
+		
+		String firstDateString = firstDate.toString();
+		String lastDateString = lastDate.toString();
+		
+		Page<Attendance> attendanceList = attendanceRepository.findByAttDateMonth(memberNo, firstDateString, lastDateString, pageable);
 		Page<AttendanceDTO> attendanceDTOList = attendanceList.map(attendance -> modelMapper.map(attendance, AttendanceDTO.class));
 		
-		log.info("[AttendanceService] attendanceDTOList : {}, attendanceDTOList");
+		log.info("[AttendanceService] attendanceList : {}", attendanceList);
+		log.info("[AttendanceService] attendanceDTOList : {}", attendanceDTOList);
 		
-		log.info("[AttendanceService] getMyAttList Start ====================");
+		log.info("[AttendanceService] getMyAttList End ====================");
 		
 		return attendanceDTOList;
 		

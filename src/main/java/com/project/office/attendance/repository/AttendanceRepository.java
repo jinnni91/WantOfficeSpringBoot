@@ -18,12 +18,10 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 	@EntityGraph(attributePaths= {"member"})
 	@Query("SELECT a " +
 			 "FROM Attendance a " +
-			"WHERE a.attDate = :attDate " +
-			 "AND a.member.memberNo = :memberNo"/*+
-			 "BETWEEN TO_DATE('${a.attDate}', 'YYYY-MM-DD') " +
-			  "AND LAST_DAY(TO_DATE('${a.attDate}', 'YYYY-MM-DD')"*/
+			"WHERE a.attDate <= :lastDateString and a.attDate >= :firstDateString " +
+			  "AND a.member.memberNo = :memberNo"
 			)
-	Page<Attendance> findByMemberNoAndAttDate(Pageable pageable, Long memberNo, String attDate);
+	Page<Attendance> findByAttDateMonth(@Param("memberNo") Long memberNo, @Param("firstDateString") String firstDateString, @Param("lastDateString") String lastDateString, Pageable pageable);
 
 	/* 날짜별 근태 목록 조회(관리자) */
 	@EntityGraph(attributePaths= {"member"})
@@ -37,6 +35,6 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 			 "FROM Attendance a " +
 			"WHERE a.attIn < :now and a.attIn > :past and a.member.memberNo = :memberNo"
 			)
-	Optional<Attendance> findByMemberAndAttDate(@Param("now") LocalDateTime today, @Param("past") LocalDateTime past, @Param("memberNo") Long memberNo);
+	Optional<Attendance> findByMemberAndAttIn(@Param("now") LocalDateTime today, @Param("past") LocalDateTime past, @Param("memberNo") Long memberNo);
 	
 }
