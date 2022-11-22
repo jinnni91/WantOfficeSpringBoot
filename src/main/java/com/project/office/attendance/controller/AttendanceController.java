@@ -35,7 +35,7 @@ public class AttendanceController {
 		this.attendanceService = attendanceService;
 	}
 	
-	//출근 등록
+	/* 출근 등록 */
 	@PostMapping("/attendance/in")
 	public ResponseEntity<ResponseDTO> insertAttIn(@AuthenticationPrincipal MemberDTO member) throws ParseException {
 		
@@ -57,6 +57,21 @@ public class AttendanceController {
 		
 	}
 	
+	/* 출근 조회 */
+	@GetMapping("/attendance/in")
+	public ResponseEntity<ResponseDTO> selectAttIn(@AuthenticationPrincipal MemberDTO member) {
+		
+		log.info("[AttendanceController] selectAttIn Start ====================");
+		log.info("[AttendanceController] member : {}", member);
+		
+		log.info("[AttendanceController] selectAttIn End ====================");
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDTO(HttpStatus.OK, "출근 조회 완료", attendanceService.selectAttIn(member)));
+		
+	}
+	
 	/* 퇴근 등록 */
 	@PatchMapping("/attendance/out")
 	public ResponseEntity<ResponseDTO> insertAttOut(@AuthenticationPrincipal MemberDTO member) throws ParseException {
@@ -66,29 +81,30 @@ public class AttendanceController {
 		AttendanceDTO attendanceDTO = new AttendanceDTO();
 		
 		LocalDateTime now = LocalDateTime.now();
-//		int OutHour = now.getHour();
-//		int OutMinute = now.getMinute();
 		
 		attendanceDTO.setMember(member);
 		attendanceDTO.setAttOut(now);
-		
-//		LocalDateTime attIn = attendanceDTO.getAttIn();
-//		int InHour = attIn.getHour();
-//		int InMinute = attIn.getMinute();
-//		
-//		if(attIn != null && now != null && InHour <= 9 && InMinute < 30 && OutHour >= 17 && OutMinute >= 1) {
-//			attendanceDTO.setAttType("정상출근");
-//		} else if(attIn != null && now != null && InHour > 9 && InMinute >= 30) {
-//			attendanceDTO.setAttType("지각");
-//		} else if(attIn != null && now != null && OutHour <= 17 && OutMinute < 1) {
-//			attendanceDTO.setAttType("조퇴");
-//		}
 		
 		log.info("[AttendanceController] insertAttOut End ====================");
 		
 		return ResponseEntity
 				.ok()
 				.body(new ResponseDTO(HttpStatus.OK, "퇴근 완료", attendanceService.insertAttOut(attendanceDTO, now)));
+		
+	}
+	
+	/* 퇴근 조회 */
+	@GetMapping("/attendance/out")
+	public ResponseEntity<ResponseDTO> selectAttOut(@AuthenticationPrincipal MemberDTO member) {
+		
+		log.info("[AttendanceController] selectAttOut Start ====================");
+		log.info("[AttendanceController] member : {}", member);
+		
+		log.info("[AttendanceController] selectAttOut End ====================");
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDTO(HttpStatus.OK, "퇴근 조회 완료", attendanceService.selectAttOut(member)));
 		
 	}
 	

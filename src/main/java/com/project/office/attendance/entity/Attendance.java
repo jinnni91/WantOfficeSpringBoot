@@ -55,7 +55,7 @@ public class Attendance {
 	private String attType;
 	
 	@Column(name = "ATT_TIME")
-	private Long attTime;
+	private String attTime;
 	
 	@ManyToOne
 	@JoinColumn(name = "MEMBER_NO")
