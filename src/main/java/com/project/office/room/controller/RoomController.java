@@ -68,7 +68,11 @@ public class RoomController {
 	@PostMapping("/rooms-managements")
 	public ResponseEntity<ResponseDTO> insertRoomForAdmin(@ModelAttribute RoomDTO roomDTO){
 		
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회의실 등록 성공", roomService.insertRoomForAdmin(roomDTO)));
+		log.info("[RoomController] RoomDTO: {}", roomDTO);
+		roomService.insertRoomForAdmin(roomDTO);
+		roomDTO.setRoomImage(null);
+		
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회의실 등록 성공", roomDTO));
 	}
 	
 	/* 4. 회의실 수정(관리자) */
