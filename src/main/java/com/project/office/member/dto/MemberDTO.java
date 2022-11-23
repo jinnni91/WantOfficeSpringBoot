@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.office.auth.dto.AuthDTO;
 import com.project.office.dept.dto.DeptDTO;
@@ -25,8 +26,10 @@ public class MemberDTO implements UserDetails {
 	private PositionDTO positionNo;
 	private DeptDTO deptNo;
 	private java.util.Date memberJoinDate;
-	private String memberFileUrl;
+//	private String memberFileUrl;
 	private AuthDTO authNo;
+	
+//	private MultipartFile memberImage;
 
 		// security 인증, 인가
 		private Collection<? extends GrantedAuthority> authorities;

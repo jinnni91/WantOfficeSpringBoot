@@ -1,4 +1,4 @@
-package com.project.office.member.exceptioin;
+package com.project.office.exception;
 
 public class FindIdFailedException extends RuntimeException {
 
