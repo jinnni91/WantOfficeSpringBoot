@@ -24,4 +24,6 @@ public class MemberController {
 	public ResponseEntity<ResponseDTO> selectMyMemberInfo(@PathVariable String memberId) {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", memberService.selectMyInfo(memberId)));
 	}
+	
+	
 }
