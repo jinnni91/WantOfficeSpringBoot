@@ -1,0 +1,48 @@
+server:
+  port: 8001
+  
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521:xe
+    username: C##WANTOFFICE
+    password: WANTOFFICE
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+  web:
+    resources:
+      static-locations: classpath:/wantimgs/
+      
+# jpa config
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    database: oracle
+    properties:
+      hibernate:
+        '[format_sql]': true      
+        
+# 이미지 저장할 위치와 응답 시 이미지 주소 설정
+image:
+  # WebConfig에 세팅
+  add-resource-locations: classpath:/static/wantimgs/
+  add-resource-handler: /wantimgs/**
+  # Service에 세팅
+  image-dir: src/main/resources/static/wantimgs
+  image-url: http://localhost:8001/wantimgs/
+  
+# 이미지 저장할 위치와 응답 시 이미지 주소 설정
+file:
+  # WebConfig에 세팅
+  add-resource-locations: classpath:/static/wantfiles/
+  add-resource-handler: /wantfiles/**
+  # Service에 세팅
+  file-dir: src/main/resources/static/wantfiles
+  file-url: http://localhost:8001/wantfiles/
+  
+# Secret key
+jwt:
+  secret: EoDcy9qRM/9ZkT0VaQh4pQqo7UtVbo7Ta3PL9hDh9R2GI1zlj08/ks5BgitZultQPv1K6fPAv33d5sDF98+YvA==
