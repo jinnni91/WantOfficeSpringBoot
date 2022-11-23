@@ -2,7 +2,7 @@ package com.project.office.library.dto;
 
 import java.util.Date;
 
-import com.project.office.member.dto.MemberDTO;
+import com.project.office.member.entity.Member;
 
 import lombok.Data;
 
@@ -15,6 +15,6 @@ public class LibraryDTO {
 	private String libraryStatus;
 	private Date libraryCreateDate;
 	private Date libraryUpdateDate;
-	private MemberDTO memberNo;
+	private Member member;
 	
 }

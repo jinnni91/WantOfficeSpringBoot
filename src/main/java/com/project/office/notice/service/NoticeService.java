@@ -1,5 +1,9 @@
 package com.project.office.notice.service;
 
+import java.sql.Date;
+
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -52,8 +56,49 @@ public class NoticeService {
 		return noticeDTO;
 	}
 
-	
+	/* 공지사항 등록 */
+	@Transactional
+	public NoticeDTO insertNoticeForAdmin(NoticeDTO noticeDTO) {
+		
+		log.info("[NoticeService] insertNotice Start ==========");
+		log.info("[NoticeService] noticeDTO : {}", noticeDTO);
+		
+		noticeRepository.save(modelMapper.map(noticeDTO, Notice.class));
+		
+		return noticeDTO;
+	}
 
+	
+	/* 공지사항 수정 */
+	@Transactional
+	public NoticeDTO updateNoticeForAdmin(NoticeDTO noticeDTO) {
+
+		log.info("[NoticeService] updateNotice Start ==========");
+		log.info("[NoticeService] updateDTO : {}", noticeDTO);
+		
+		Notice oriNotice = noticeRepository.findById(noticeDTO.getNoticeNo()).orElseThrow(
+				() -> new IllegalArgumentException("해당 공지사항이 없습니다. noticeNo =" + noticeDTO.getNoticeNo()));
+		
+		oriNotice.update(noticeDTO.getNoticeTitle(),
+				noticeDTO.getNoticeContent(),
+				noticeDTO.getNoticeUpdate(),
+				noticeDTO.getNoticeDelete(),
+				noticeDTO.getNoticeType());
+		
+		noticeRepository.save(oriNotice);
+		
+		return noticeDTO;
+	}
+	
+	/* 공지사항 삭제 */
+	public void deleteNoticeForAdmin(Long noticeNo) {
+		
+		Notice deleteNotice = noticeRepository.findById(noticeNo).get();
+		noticeRepository.delete(deleteNotice);
+//		deleteNotice.setNoticeStatus("N");
+//		deleteNotice.setNoticeDelete(new Date(System.currentTimeMillis()));
+		
+	}
 
 
 	
