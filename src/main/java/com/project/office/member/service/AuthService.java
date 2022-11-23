@@ -12,7 +12,7 @@ import com.project.office.jwt.TokenProvider;
 import com.project.office.member.dto.MemberDTO;
 import com.project.office.member.dto.TokenDTO;
 import com.project.office.member.entity.Member;
-
+import com.project.office.member.exceptioin.FindIdFailedException;
 import com.project.office.member.repository.MemberRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -73,6 +73,18 @@ public class AuthService {
 		log.info("[AuthService] login End ===========================");
 		
 		return tokenDto;
+	}
+
+	
+	// 아이디 찾기
+	public String findId(MemberDTO memberDto) {
+		log.info("[AuthService] findId Start ===========================");
+		log.info("[AuthService] memberDto : {}", memberDto);
+		
+		Member member = memberRepository.findByMemberNameAndMemberEmail(memberDto.getMemberName(), memberDto.getMemberEmail())
+				.orElseThrow(() -> new FindIdFailedException("입력하신 정보에 해당하는 아이디를 조회할 수 없습니다."));
+		
+		return member.getMemberId();
 	}
 
 }

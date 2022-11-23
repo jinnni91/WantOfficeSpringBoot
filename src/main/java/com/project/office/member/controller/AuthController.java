@@ -28,11 +28,6 @@ public class AuthController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "사원 등록이 완료되었습니다.", authService.signup(memberDto)));
 	}
 	
-	// 로그인
-	@PostMapping("/login")
-	public ResponseEntity<ResponseDTO> login(@RequestBody MemberDTO memberDto) {
-		
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "로그인이 완료되었습니다.", authService.login(memberDto)));
-	}
+	
 
 }
