@@ -1,9 +1,8 @@
 package com.project.office.notice.dto;
 
-import java.sql.Date;
+import java.util.Date;
 
-import com.project.office.dept.entity.Dept;
-import com.project.office.member.entity.Member;
+import com.project.office.member.dto.MemberDTO;
 
 import lombok.Data;
 
@@ -11,7 +10,7 @@ import lombok.Data;
 public class NoticeDTO {
 	
 	private Long noticeNo;
-	private Member member;	
+	private MemberDTO member;	
 	private String noticeTitle;
 	private String noticeContent;
 	private Date noticeDate;
@@ -19,5 +18,5 @@ public class NoticeDTO {
 	private Date noticeDelete;
 	private String noticeStatus;
 	private String noticeType;
-	private Dept dept;
+//	private Dept dept;
 }

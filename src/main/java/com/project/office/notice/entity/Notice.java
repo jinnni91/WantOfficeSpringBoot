@@ -37,7 +37,7 @@ public class Notice {
 	
 	@ManyToOne
 	@JoinColumn(name = "MEMBER_NO") // MEMBER_ID 에서 MEMBER_NO로 변경 
-	private Member memberNo;
+	private Member member;
 	
 	@Column(name = "NOTICE_TITLE")
 	private String noticeTitle;
@@ -46,23 +46,37 @@ public class Notice {
 	private String noticeContent;
 	
 	@Column(name = "NOTICE_DATE")
-	private Date noticeDate;
+	private java.util.Date noticeDate;
 	
 	@Column(name = "NOTICE_UPDATE")
-	private Date noticeUpdate;
+	private java.util.Date noticeUpdate;
 	
 	@Column(name = "NOTICE_DELETE")
-	private Date noticeDelete;
+	private java.util.Date noticeDelete;
 	
 	@Column(name = "NOTICE_STATUS")
 	private String noticeStatus;
 	
 	@Column(name = "NOTICE_TYPE")
 	private String noticeType;
+
+	public void update( String noticeContent, String noticeTitle,
+				java.util.Date noticeUpdate, java.util.Date noticeDelete,
+				String noticeType) {
+		
+
+
+		this.noticeContent = noticeContent;
+		this.noticeTitle = noticeTitle;
+		this.noticeUpdate = noticeUpdate;
+		this.noticeDelete = noticeDelete;
+		this.noticeType = noticeType;
+		
+	}
 	
-	@ManyToOne
-	@JoinColumn(name = "DEPT_NO")
-	private Dept dept;
+//	@ManyToOne
+//	@JoinColumn(name = "DEPT_NO")
+//	private Dept dept;
 
 	
 }

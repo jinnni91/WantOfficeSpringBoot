@@ -1,6 +1,6 @@
 package com.project.office.library.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,14 +44,25 @@ public class Library {
 	private String libraryStatus;
 	
 	@Column(name = "LIBRARY_CREATE_DATE")
-	private Date libraryCrateDate;
+	private java.util.Date libraryCreateDate;
 	
 	@Column(name = "LIBRARY_UPDATE_DATE")
-	private Date libraryUpdateDate;
+	private java.util.Date libraryUpdateDate;
 	
 	@ManyToOne
 	@JoinColumn(name = "MEMBER_NO")
-	private Member memberNo;
+	private Member member;
+
+	public void update(String libraryTitle, String libraryContent, 
+			 java.util.Date libraryUpdateDate) {
+		
+
+		this.libraryTitle = libraryTitle;
+		this.libraryContent = libraryContent;
+		this.libraryUpdateDate = libraryUpdateDate;
+
+		
+	}
 	
 	
 }
