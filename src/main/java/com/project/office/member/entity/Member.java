@@ -66,8 +66,8 @@ public class Member {
 	@Column(name = "MEMBER_JOIN_DATE")
 	private java.util.Date memberJoinDate;
 	
-	@Column(name = "MEMBER_FILE_URL")
-	private String memberFileUrl;
+//	@Column(name = "MEMBER_FILE_URL")
+//	private String memberFileUrl;
 	
 	@ManyToOne
 	@JoinColumn(name = "AUTH_NO")
