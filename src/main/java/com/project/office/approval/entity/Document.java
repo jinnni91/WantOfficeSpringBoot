@@ -1,15 +1,23 @@
 package com.project.office.approval.entity;
 import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.project.office.member.entity.Member;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+
 
 @NoArgsConstructor
 @Getter
@@ -45,12 +53,12 @@ public class Document {
 	private Date docDate;
 	
 	
-//	@ManyToOne
-//	@JoinColumn(name = "MEMBER_NO")
-//	private MemberEntity member;
-//	
-//	@ManyToOne
-//	@JoinColumn(name = "DF_NO")
-//	private DfDtoEntity df;
+	@ManyToOne
+	@JoinColumn(name = "MEMBER_NO")
+	private Member Emember;
+	
+	@ManyToOne
+	@JoinColumn(name = "DF_NO")
+	private Form form;
 
 }
