@@ -63,7 +63,7 @@ public class SecurityConfig {
 		             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 		             .antMatchers("/auth/**").permitAll()
 		             .antMatchers("/api/attendance-manage").hasRole("ADMIN")
-		             .antMatchers("/api/room/**").permitAll()
+//		             .antMatchers("/api/room/**").permitAll()
 		             .antMatchers("/api/**").hasAnyRole("MEMBER", "APP_AUTH", "ADMIN")
 		         .and()
 		         	.cors()
