@@ -50,10 +50,10 @@ public class Progress {
 	@ManyToOne
 	@JoinColumn(name = "MEMBER_NO")
 	private Member member;
-	
-	@ManyToOne
-	@JoinColumn(name = "DOC_NO")
-	private Document document;
+//	
+//	@ManyToOne
+//	@JoinColumn(name = "DOC_NO")
+//	private Document document;
 	
 
 
