@@ -2,7 +2,6 @@ package com.project.office.approval.dto;
 
 import java.sql.Date;
 
-import com.project.office.from.FormDTO.FormDTO;
 import com.project.office.member.dto.MemberDTO;
 
 import lombok.Data;

@@ -20,41 +20,34 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "TBL_PROGRESS")
-@SequenceGenerator(name = "DP_SEQ_GENERATOR",
-
-sequenceName = "SEQ_DP_NO",
+@Table(name = "TBL_FORM")
+@SequenceGenerator(name = "DF_SEQ_GENERATOR",
+sequenceName = "SEQ_DF_NO",
 initialValue = 1, allocationSize = 1)
-public class Progress {
+public class Form {
 	
 	@Id
-	@Column(name = "DP_NO")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DP_SEQ_GENERATOR")
-	private Long dpNo;
+	@Column(name = "DF_NO")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DF_SEQ_GENERATOR")
+	private Long dfNo;
 	
-	@Column(name = "DP_PRO_STATUS")
-	private String dpProstatus;
+	@Column(name = "DF_TITLE")
+	private String dfTitle;
 	
-	@Column(name = "DP_COMMENT")
-	private String dpcComment;
+	@Column(name = "DF_CONTENT")
+	private String dfContent;
 	
-	@Column(name = "DP_DATE")
-	private Date dpDate;
+	@Column(name = "DF_DATE")
+	private Date dfDate;
 	
-	@Column(name = "DP_SIGN_DATE")
-	private Date dpSignDate;
+	@Column(name = "DF_DELETE")
+	private Date dfDelete;
 	
-	@Column(name = "DP_ORDER_NO")
-	private Long dpOrderNo;
+	@Column(name = "DF_STATUS")
+	private String dfStatus;
 	
 	@ManyToOne
 	@JoinColumn(name = "MEMBER_NO")
-	private Member member;
-	
-	@ManyToOne
-	@JoinColumn(name = "DOC_NO")
-	private Document document;
-	
-
+	private Member member;	
 
 }

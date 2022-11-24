@@ -1,6 +1,7 @@
 package com.project.office.approval.dto;
 import java.sql.Date;
 
+import com.project.office.approval.entity.Document;
 import com.project.office.member.dto.MemberDTO;
 
 import lombok.Data;
@@ -16,6 +17,6 @@ public class ProgressDTO {
 	private Long dpOrderNo;
 	
 	private MemberDTO member;
-//	private DocDto doc;
+	private Document document;
 
 }
