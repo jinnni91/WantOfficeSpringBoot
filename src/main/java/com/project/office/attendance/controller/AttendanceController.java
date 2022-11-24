@@ -2,6 +2,7 @@ package com.project.office.attendance.controller;
 
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -96,26 +97,17 @@ public class AttendanceController {
 	/* 내 근태 월별 목록 조회 */
 	@GetMapping("/attendance/my")
 	public ResponseEntity<ResponseDTO> getMyAttList
-		(@AuthenticationPrincipal MemberDTO member, @RequestParam(name="page", defaultValue="1") int page, @RequestParam(name="search") String attDate) {
+		(@AuthenticationPrincipal MemberDTO member, @RequestParam(name="year") int year, @RequestParam(name="month") int month) {
 		
 		log.info("[AttendanceController] getMyAttList Start =====================");
-		log.info("[AttendanceController] page : {}", page);
 		
-		Page<AttendanceDTO> attendanceDTOList = attendanceService.getMyAttList(member, page, attDate);
-		
-		PagingButton pageInfo = pagenation.getPagingButton(attendanceDTOList);
-		
-		log.info("[AttendanceController] pageInfo : {}", pageInfo);
-		
-		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
-		responseDTOWithPaging.setPageBtn(pageInfo);
-		responseDTOWithPaging.setData(attendanceDTOList.getContent());
-		
+		List<AttendanceDTO> attendanceDTOList = attendanceService.getMyAttList(member, year, month);
+	
 		log.info("[AttendanceController] getMyAttList End =====================");
 		
 		return ResponseEntity
 				.ok()
-				.body(new ResponseDTO(HttpStatus.OK, "내 근태 조회 완료", responseDTOWithPaging));
+				.body(new ResponseDTO(HttpStatus.OK, "내 근태 조회 완료", attendanceDTOList));
 		
 	}
 	

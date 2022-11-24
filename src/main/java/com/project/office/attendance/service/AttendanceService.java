@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -100,8 +102,8 @@ public class AttendanceService {
 		// 출근 시간과 퇴근 시간 차이로 근무시간 구하기
 		Duration duration = Duration.between(In, Out);
 		Long time = duration.getSeconds();
-		Long hour = time/(60*60);
-		Long minute = time%60;
+		Long hour = time / 3600;
+		Long minute = time % 3600 / 60;
 		
 		String attTime = (hour + "시간 " + minute + "분");
 		
@@ -128,25 +130,26 @@ public class AttendanceService {
 	}
 	
 	/* 내 근태 월별 목록 조회 */
-	public Page<AttendanceDTO> getMyAttList(MemberDTO member, int page, String attDate) {
+	public List<AttendanceDTO> getMyAttList(MemberDTO member, int year, int month) {
 		
 		log.info("[AttendanceService] getMyAttList Start ====================");
 		
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("attDate").descending());
-		
 		Long memberNo = member.getMemberNo();
 		
-		LocalDate date = LocalDate.parse(attDate);
-		YearMonth month = YearMonth.from(date);
+		String str = year + "-" + month + "-01";
+		log.info("[AttendanceService] yearMonth : {}", str);
 		
-		LocalDate firstDate = month.atDay(1);
-		LocalDate lastDate = month.atEndOfMonth();
+		LocalDate date = LocalDate.parse(str);
+		YearMonth yearMonth = YearMonth.from(date);
+		
+		LocalDate firstDate = yearMonth.atDay(1);
+		LocalDate lastDate = yearMonth.atEndOfMonth();
 		
 		String firstDateString = firstDate.toString();
 		String lastDateString = lastDate.toString();
 		
-		Page<Attendance> attendanceList = attendanceRepository.findByAttDateMonth(memberNo, firstDateString, lastDateString, pageable);
-		Page<AttendanceDTO> attendanceDTOList = attendanceList.map(attendance -> modelMapper.map(attendance, AttendanceDTO.class));
+		List<Attendance> attendanceList = attendanceRepository.findByAttDateMonth(memberNo, firstDateString, lastDateString);
+		List<AttendanceDTO> attendanceDTOList = attendanceList.stream().map(attendance -> modelMapper.map(attendance, AttendanceDTO.class)).collect(Collectors.toList());
 		
 		log.info("[AttendanceService] attendanceList : {}", attendanceList);
 		log.info("[AttendanceService] attendanceDTOList : {}", attendanceDTOList);
