@@ -11,6 +11,8 @@ public interface DocumentRepository extends JpaRepository<Document, Long>{
 	
 	// 기안자 : 결재 조회
 	Page<Document> findByDocStatus(Pageable pageable, String docStatus);
+	
+//	Document findByAll();
 
 	
 }
