@@ -79,7 +79,7 @@ public class ReservationService {
 				.orElseThrow(() -> new IllegalArgumentException("해당 예약사항이 없습니다. reservationNo=" + reservationNo));
 		
 		ReservationDTO reservationDTO = modelMapper.map(reservation, ReservationDTO.class);
-		reservationDTO.setRoomImageUrl(IMAGE_URL + reservationDTO.getRoomImageUrl());
+//		reservationDTO.setRoomImageUrl(IMAGE_URL + reservationDTO.getRoomImageUrl());
 		
 		log.info("[ReservationService] reservationDTO : {}", reservationDTO);
 		
