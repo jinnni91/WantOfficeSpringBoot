@@ -68,10 +68,10 @@ public class Document {
 //	@OneToMany(mappedBy ="document", fetch = FetchType.LAZY)
 //	private List<Progress> progress;
 	
-	
-	@OneToMany
-	@JoinColumn(name = "DP_NO")
-	private List<Progress> progress;
+//	
+//	@OneToMany
+//	@JoinColumn(name = "DP_NO")
+//	private List<Progress> progress;
 	
 	
 	

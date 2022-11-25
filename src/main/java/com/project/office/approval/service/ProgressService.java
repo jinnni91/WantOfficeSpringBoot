@@ -2,6 +2,10 @@
 package com.project.office.approval.service;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.project.office.approval.dto.ProgressDTO;
@@ -22,13 +26,17 @@ public class ProgressService {
 		}
 		
 		
-		public ProgressDTO selectProduct(Long dpNo) {
+		public Page<ProgressDTO> selectProgress(int page) {
 			
-			Progress progress = progressRepository.findByDpNo(dpNo).orElseThrow(() -> new IllegalArgumentException("작성 하신 결재가없습니다. DpNo=" + dpNo));
-			ProgressDTO progressDto = modelMapper.map(progress, ProgressDTO.class);
+			Pageable pageable = PageRequest.of(page -1, 10, Sort.by("dpNo").descending());
+			
+			
+			Page<Progress> ProgressList = progressRepository.findAll(pageable);
+			
+			Page<ProgressDTO> ProgressDTOList = ProgressList.map(progress -> modelMapper.map(progress, ProgressDTO.class));
 			
 		
-			return progressDto;
+			return ProgressDTOList;
 		
 	}
 		
