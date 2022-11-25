@@ -36,11 +36,10 @@ public class ReservationController {
 		this.reservationService = reservationService;
 	}
 	
-	/* 1. 예약 전체 조회(회원) */
-	@GetMapping("/rvlists")
+	/* 1. 예약 조회(회원) */
+	@GetMapping("/rvlist/{roomNo}")
 	public ResponseEntity<ResponseDTO> selectReservationList(@RequestParam(name= "page", defaultValue="1")int page){
-		log.info("[ReservationController] selectReservationList start ==============");
-		log.info("[ReservationController] page : {}", page);
+
 		
 		Page<ReservationDTO> reservationDTOList = reservationService.selectReservationList(page);
 		
@@ -78,7 +77,9 @@ public class ReservationController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 리스트 조회 성공", responseDTOWithPaging));
 	}
 	
-	/* 3. 예약 상세 조회(공통) */
+	/* 3. 예약조회(공통) */
+	
+	/* 3-1. 예약 상세 조회(관리자) */
 	@GetMapping("/rvlists/{reservationNo}")
 	public ResponseEntity<ResponseDTO> selectReservationDetail(@PathVariable Long reservationNo) {
 		

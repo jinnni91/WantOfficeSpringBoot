@@ -40,7 +40,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	private MemberDTO addAuthorities(Member member) {
 		MemberDTO memberDto = modelMapper.map(member, MemberDTO.class);
-		memberDto.setAuthorities(Arrays.asList(new SimpleGrantedAuthority(member.getAuthNo().getAuthName())));
+		memberDto.setAuthorities(Arrays.asList(new SimpleGrantedAuthority(member.getAuth().getAuthName())));
 		
 		return memberDto;
 	}
