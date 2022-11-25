@@ -53,7 +53,7 @@ public class TokenProvider {
 		
 		log.info("[TokenProvider] generate Start ===========================");
 		// 권한 가져오기
-		List<AuthDTO> roles = Collections.singletonList(member.getAuthNo());
+		List<AuthDTO> roles = Collections.singletonList(member.getAuth());
 		
 		Claims claims = Jwts
 				.claims()
