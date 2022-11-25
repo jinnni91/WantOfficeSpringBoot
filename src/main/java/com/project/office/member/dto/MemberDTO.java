@@ -22,10 +22,10 @@ public class MemberDTO implements UserDetails {
 	private String memberEmail;
 	private String memberStatus;
 	private Long memberRest;
-	private PositionDTO positionNo;
-	private DeptDTO deptNo;
+	private PositionDTO position;
+	private DeptDTO dept;
 	private java.util.Date memberJoinDate;
-	private AuthDTO authNo;
+	private AuthDTO auth;
 
 		// security 인증, 인가
 		private Collection<? extends GrantedAuthority> authorities;
