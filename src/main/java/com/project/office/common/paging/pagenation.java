@@ -4,22 +4,22 @@ import org.springframework.data.domain.Page;
 
 public class pagenation {
 	
-	public static PagingButton getPagingButton(Page page) {
+public static PagingButton getPagingButton(Page page) {
 		
-		int currentPage = page.getNumber() + 1;
+		int currentPage = page.getNumber() + 1;	
 		int defaultButtonCount = 5;
-		int firstPage;
+		int startPage;
 		int endPage;
 		
-		firstPage = (int)(Math.ceil((double) currentPage / defaultButtonCount) -1);
-		endPage = firstPage + defaultButtonCount - 1;
+		startPage = (int) (Math.ceil((double) currentPage / defaultButtonCount) - 1) * defaultButtonCount + 1;
+		endPage = startPage + defaultButtonCount - 1;
 		
 		if(page.getTotalPages() < endPage)
 			endPage = page.getTotalPages();
 		
 		if(page.getTotalPages() == 0 && endPage == 0)
-			endPage = firstPage;
+			endPage = startPage;
 		
-		return new PagingButton(currentPage, firstPage, endPage, page.getTotalPages());
+		return new PagingButton(currentPage, startPage, endPage, page.getTotalPages());
 	}
 }

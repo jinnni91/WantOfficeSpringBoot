@@ -8,7 +8,7 @@ import lombok.Data;
 public class PagingButton {
 
 	private int currentPage;
-	private int firstPage;
+	private int startPage;
 	private int endPage;
 	private int maxPage;
 	
