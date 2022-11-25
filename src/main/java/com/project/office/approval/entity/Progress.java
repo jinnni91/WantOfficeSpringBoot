@@ -33,7 +33,7 @@ public class Progress {
 	private Long dpNo;
 	
 	@Column(name = "DP_PRO_STATUS")
-	private String dpProstatus;
+	private String dpStatus;
 	
 	@Column(name = "DP_COMMENT")
 	private String dpcComment;
@@ -50,10 +50,10 @@ public class Progress {
 	@ManyToOne
 	@JoinColumn(name = "MEMBER_NO")
 	private Member member;
-//	
-//	@ManyToOne
-//	@JoinColumn(name = "DOC_NO")
-//	private Document document;
+	
+	@ManyToOne
+	@JoinColumn(name = "DOC_NO")
+	private Document document;
 	
 
 

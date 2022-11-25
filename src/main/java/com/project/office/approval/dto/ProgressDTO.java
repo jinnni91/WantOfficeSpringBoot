@@ -10,7 +10,7 @@ import lombok.Data;
 public class ProgressDTO {
 	
 	private Long dpNo;
-	private String dpProcStatus;
+	private String dpStatus;
 	private String dpcComment;
 	private Date dpDate;
 	private Date dpSignDate;

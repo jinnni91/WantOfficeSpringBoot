@@ -1,16 +1,20 @@
 package com.project.office.approval.repository;
 
-import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.project.office.approval.entity.Progress;
 
-public interface ProgressRepository extends JpaRepository<Progress,Long> {
+public interface ProgressRepository extends JpaRepository<Progress, Long> {
+	
 
-//		Progress findByAll();
+//	@EntityGraph(attributePaths= {"document"})
+	Page<Progress> findAll(Pageable pageable);
 	
 	
-		Optional<Progress> findByDpNo(Long dpNo);
-		
 }
