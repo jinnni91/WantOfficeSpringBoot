@@ -52,12 +52,12 @@ public class AuthService {
 			throw new DuplicatedUsernameException("중복된 이메일입니다.");
 		} 		
 			
-		Position position = positionRepository.findById(memberDto.getPositionNo().getPositionNo()).orElseThrow(() -> new RuntimeException(""));
+		Position position = positionRepository.findById(memberDto.getPosition().getPositionNo()).orElseThrow(() -> new RuntimeException(""));
 		memberDto.setMemberRest(position.getPositionRest());
 			
 			if(position.getPositionNo() < 5) {
-				memberDto.getAuthNo().setAuthNo((long) 2);
-				log.info("[AuthService] setAuthNo : {}", memberDto.getAuthNo().getAuthNo());
+				memberDto.getAuth().setAuthNo((long) 2);
+				log.info("[AuthService] setAuthNo : {}", memberDto.getAuth().getAuthNo());
 			}
 			
 			memberDto.setMemberPassword(passwordEncoder.encode(memberDto.getMemberPassword()));

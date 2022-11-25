@@ -57,19 +57,16 @@ public class Member {
 	
 	@ManyToOne
 	@JoinColumn(name = "POSITION_NO")
-	private Position positionNo;
+	private Position position;
 	
 	@ManyToOne
 	@JoinColumn(name = "DEPT_NO")
-	private Dept deptNo;
+	private Dept dept;
 	
 	@Column(name = "MEMBER_JOIN_DATE")
 	private java.util.Date memberJoinDate;
 	
-//	@Column(name = "MEMBER_FILE_URL")
-//	private String memberFileUrl;
-	
 	@ManyToOne
 	@JoinColumn(name = "AUTH_NO")
-	private Auth authNo;
+	private Auth auth;
 }
