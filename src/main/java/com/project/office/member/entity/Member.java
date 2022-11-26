@@ -69,4 +69,8 @@ public class Member {
 	@ManyToOne
 	@JoinColumn(name = "AUTH_NO")
 	private Auth auth;
+	
+	@Column(name = "MEMBER_FILE_URL")
+	private String memberFileUrl;
+	
 }

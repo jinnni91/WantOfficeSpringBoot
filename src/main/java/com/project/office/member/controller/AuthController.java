@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,9 +33,12 @@ public class AuthController {
 	
 	// 사원 등록
 	@PostMapping("/signup")
-	public ResponseEntity<ResponseDTO> signup(@RequestBody MemberDTO memberDto) {
+	public ResponseEntity<ResponseDTO> signup(@ModelAttribute MemberDTO memberDto) {
+		
+		authService.signup(memberDto);
+		memberDto.setMemberImage(null);
 				
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "사원 등록이 완료되었습니다.", authService.signup(memberDto)));
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "사원 등록이 완료되었습니다.", memberDto));
 	}
 	
 	// 전체 사원 조회
