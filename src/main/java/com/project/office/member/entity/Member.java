@@ -72,5 +72,15 @@ public class Member {
 	
 	@Column(name = "MEMBER_FILE_URL")
 	private String memberFileUrl;
+
+	
+	public void update(String memberPassword, String memberName, String memberPhone, String memberEmail,
+			String memberFileUrl) {
+		this.memberPassword = memberPassword;
+		this.memberName = memberName;
+		this.memberPhone = memberPhone;
+		this.memberEmail = memberEmail;
+		this.memberFileUrl = memberFileUrl;
+	}
 	
 }
