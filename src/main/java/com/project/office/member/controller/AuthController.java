@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +42,7 @@ public class AuthController {
 	}
 	
 	// 전체 사원 조회
-	@GetMapping("/members")
+	@GetMapping("/member")
 	public ResponseEntity<ResponseDTO> memberInfoList(@RequestParam(name="page", defaultValue="1") int page) {
 		log.info("[AuthController] allMemberInfo Start ================================");
 		log.info("[AuthController] page : {}", page);
@@ -60,6 +60,12 @@ public class AuthController {
 		log.info("[AuthController] allMemberInfo End ================================");
 		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "전체 사원 조회가 완료되었습니다.", responseDtoWithPaging));
+	}
+	
+	// 사원 상세 조회
+	@GetMapping("/member/{memberNo}")
+	public ResponseEntity<ResponseDTO> selectMemberInfoDetail(@PathVariable Long memberNo) {
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", authService.selectMemberInfoDetail(memberNo)));
 	}
 
 }
