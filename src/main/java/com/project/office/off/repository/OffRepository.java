@@ -1,11 +1,29 @@
 package com.project.office.off.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.project.office.off.entity.Off;
 
 public interface OffRepository extends JpaRepository<Off, Long> {
-	
-	
+
+	/* 연차 조회 */
+	@EntityGraph(attributePaths= {"member"})
+	@Query("SELECT o " + 
+			 "FROM Off o " +
+			"WHERE o.member.memberNo = :memberNo"
+			)
+	Page<Off> findByMember(@Param("memberNo") Long memberNo, Pageable pageable);
+
+	/* 결과별 연차 신청 목록 조회(결재권자) */
+	@Query("SELECT o " +
+			 "FROM Off o " +
+			"WHERE o.offResult = :offResult"
+			)
+	Page<Off> findByOffResult(@Param("offResult") String offResult, Pageable pageable);
 
 }
