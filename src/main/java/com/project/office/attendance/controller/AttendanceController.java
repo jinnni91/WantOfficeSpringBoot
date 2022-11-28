@@ -2,6 +2,7 @@ package com.project.office.attendance.controller;
 
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -46,9 +47,11 @@ public class AttendanceController {
 		AttendanceDTO attendanceDTO = new AttendanceDTO();
 		
 		LocalDateTime now = LocalDateTime.now();
+		String date = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		
 		attendanceDTO.setMember(member);
 		attendanceDTO.setAttIn(now);
+		attendanceDTO.setAttDate(date);
 		
 		log.info("[AttendanceController] insertAttIn End ====================");
 		
@@ -112,7 +115,7 @@ public class AttendanceController {
 	}
 	
 	/* 날짜별 근태 조회(관리자) */
-	@GetMapping("/attendance-manage/list")
+	@GetMapping("/attendance/manage-list")
 	public ResponseEntity<ResponseDTO> getAttListForAdmin
 		(@RequestParam(name="page", defaultValue="1") int page, @RequestParam(name="search") String attDate) {
 		
@@ -122,12 +125,12 @@ public class AttendanceController {
 		
 		Page<AttendanceDTO> attendanceDTOList = attendanceService.getAttListForAdmin(page, attDate);
 		
-		PagingButton pageInfo = pagenation.getPagingButton(attendanceDTOList);
+		PagingButton pageBtn = pagenation.getPagingButton(attendanceDTOList);
 		
-		log.info("[AttendanceController] pageInfo : {}", pageInfo);
+		log.info("[AttendanceController] pageBtn : {}", pageBtn);
 		
 		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
-		responseDTOWithPaging.setPageBtn(pageInfo);
+		responseDTOWithPaging.setPageBtn(pageBtn);
 		responseDTOWithPaging.setData(attendanceDTOList.getContent());
 		
 		log.info("[AttendanceController] getAttListForAdmin End =====================");

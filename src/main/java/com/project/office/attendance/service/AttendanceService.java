@@ -136,7 +136,8 @@ public class AttendanceService {
 		
 		Long memberNo = member.getMemberNo();
 		
-		String str = year + "-" + month + "-01";
+		
+		String str = year + "-" + (month < 10 ? "0"+month : month) + "-01";
 		log.info("[AttendanceService] yearMonth : {}", str);
 		
 		LocalDate date = LocalDate.parse(str);

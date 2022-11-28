@@ -1,5 +1,6 @@
 package com.project.office.off.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.office.member.dto.MemberDTO;
 
 import lombok.Data;
@@ -8,9 +9,12 @@ import lombok.Data;
 public class OffDTO {
 	
 	private Long offNo;
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private java.util.Date offDate;
 	private java.util.Date offUpdate;
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private java.util.Date offStart;
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private java.util.Date offEnd;
 	private String offTitle;
 	private String offReason;
