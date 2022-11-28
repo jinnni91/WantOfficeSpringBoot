@@ -82,16 +82,16 @@ public class ReservationController {
 	/* 3. 예약조회(공통) */
 	
 	@GetMapping("/rvlist/{roomNo}")
-	public ResponseEntity<ResponseDTO> selectReservationList(Room room){
+	public ResponseEntity<ResponseDTO> selectReservationList(@PathVariable Long roomNo){
 
 		log.info("[ReservationController] selectReservationList start=========");
-		log.info("[ReservationController] room : {}", room);
+		log.info("[ReservationController] room : {}", roomNo);
 		
 		log.info("[ReservationController] selectReservationList end=========");
 		
 		return ResponseEntity
 				.ok()
-				.body(new ResponseDTO(HttpStatus.OK, "예약 리스트 조회 성공", reservationService.selectReservationList(room)));
+				.body(new ResponseDTO(HttpStatus.OK, "예약 리스트 조회 성공", reservationService.selectReservationList(roomNo)));
 	}
 	
 	

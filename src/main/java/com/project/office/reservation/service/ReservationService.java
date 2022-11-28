@@ -1,17 +1,13 @@
 package com.project.office.reservation.service;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.query.Query;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -23,9 +19,8 @@ import org.springframework.stereotype.Service;
 import com.project.office.reservation.dto.ReservationDTO;
 import com.project.office.reservation.entity.Reservation;
 import com.project.office.reservation.repository.ReservationRepository;
-import com.project.office.room.dto.RoomDTO;
 import com.project.office.room.entity.Room;
-import com.project.office.room.repository.RoomRepository;
+
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -167,22 +162,26 @@ public class ReservationService {
 		
 	}
 	
-	/* 3. 회의실 예약 조회 */
-	public ReservationDTO selectReservationList(Room room) {
+	/* 9. 회의실 예약 조회 */
+	public List<ReservationDTO> selectReservationList(Long roomNo) {
 		log.info("[ReservationService] selectRoomReservationList start============");
-		log.info("[ReservationService] room : {}", room);
+		log.info("[ReservationService] room : {}", roomNo);
 		
-		Long roomNo = room.getRoomNo();
+		
 
 		LocalDateTime start = LocalDate.now().atStartOfDay();
 		LocalDateTime end = LocalDateTime.now().with(LocalTime.MAX);
-
+		
+		log.info("[ReservationService] start : {},end: {}", start,end);
+		
 		List<Reservation> reservation = reservationRepository.findByRoomAndReservationDate(start, end, roomNo)
 				.orElseThrow(() -> new RuntimeException("오늘 예약이 존재하지 않습니다."));
 		
+		//log.info("[ReservationService] reservation : {}", reservation);
+		
 		log.info("[ReservationService] selectselectRoomReservation end============");
 		
-		return modelMapper.map(reservation, ReservationDTO.class);
+		return reservation.stream().map(r -> modelMapper.map(r, ReservationDTO.class)).collect(Collectors.toList());
 	}
 	
 
