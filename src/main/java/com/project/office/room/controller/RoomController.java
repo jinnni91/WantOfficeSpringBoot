@@ -65,7 +65,7 @@ public class RoomController {
 	}
 	
 	/* 3. 회의실 등록(관리자) */
-	@PostMapping("/rooms-managements")
+	@PostMapping("/room-managements")
 	public ResponseEntity<ResponseDTO> insertRoomForAdmin(@ModelAttribute RoomDTO roomDTO){
 		
 		log.info("[RoomController] RoomDTO: {}", roomDTO);

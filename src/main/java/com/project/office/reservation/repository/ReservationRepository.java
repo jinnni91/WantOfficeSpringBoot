@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.project.office.reservation.entity.Reservation;
+import com.project.office.room.entity.Room;
 
 
 
@@ -31,11 +32,11 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 			 "AND re.reservationStatus = '예약가능'")
 	Optional<Reservation> findByReservationNo(@Param("reservationNo")Long reservationNo);
 	
-	/* 3-1. 예약 조회(회의실 별) */
+	/* 3-1. 예약 조회(회의실) */
 	@Query("SELECT re " +
 			 "FROM Reservation re " +
 			"WHERE re.reservationNo = reservationNo " +
-			 "AND (re.reservationDate >= :start and re.reservationDate < :end and re.room.roomNo = :roomNo)")
+			 "AND re.reservationDate >= :start and re.reservationDate < :end and re.room.roomNo = :roomNo")
 	Optional<List<Reservation>> findByRoomAndReservationDate(@Param("start")LocalDateTime start, @Param("end")LocalDateTime end, @Param("roomNo")Long roomNo);
 
 	
