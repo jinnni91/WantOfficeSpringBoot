@@ -5,6 +5,7 @@ package com.project.office.reservation.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,7 +22,8 @@ import com.project.office.common.paging.ResponseDTOWithPaging;
 import com.project.office.common.paging.pagenation;
 import com.project.office.reservation.dto.ReservationDTO;
 import com.project.office.reservation.service.ReservationService;
-
+import com.project.office.room.dto.RoomDTO;
+import com.project.office.room.entity.Room;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,11 +39,11 @@ public class ReservationController {
 	}
 	
 	/* 1. 예약 조회(회원) */
-	@GetMapping("/rvlist/{roomNo}")
-	public ResponseEntity<ResponseDTO> selectReservationList(@RequestParam(name= "page", defaultValue="1")int page){
+	@GetMapping("/rvlist-management/{roomNo}")
+	public ResponseEntity<ResponseDTO> selectReservationMList(@RequestParam(name= "page", defaultValue="1")int page){
 
 		
-		Page<ReservationDTO> reservationDTOList = reservationService.selectReservationList(page);
+		Page<ReservationDTO> reservationDTOList = reservationService.selectReservationMList(page);
 		
 		PagingButton pageBtn = pagenation.getPagingButton(reservationDTOList);
 		
@@ -79,13 +81,27 @@ public class ReservationController {
 	
 	/* 3. 예약조회(공통) */
 	
+	@GetMapping("/rvlist/{roomNo}")
+	public ResponseEntity<ResponseDTO> selectReservationList(Room room){
+
+		log.info("[ReservationController] selectReservationList start=========");
+		log.info("[ReservationController] room : {}", room);
+		
+		log.info("[ReservationController] selectReservationList end=========");
+		
+		return ResponseEntity
+				.ok()
+				.body(new ResponseDTO(HttpStatus.OK, "예약 리스트 조회 성공", reservationService.selectReservationList(room)));
+	}
+	
+	
 	/* 3-1. 예약 상세 조회(관리자) */
-	@GetMapping("/rvlists/{reservationNo}")
+	@GetMapping("/rvlists-management/{reservationNo}")
 	public ResponseEntity<ResponseDTO> selectReservationDetail(@PathVariable Long reservationNo) {
 		
 		return ResponseEntity
 				.ok()
-				.body(new ResponseDTO(HttpStatus.OK, "예약 정보 상세 조회 성공", reservationService.selectReservation(reservationNo)));
+				.body(new ResponseDTO(HttpStatus.OK, "예약 정보 상세 조회 성공", reservationService.selectReservationForAdmin(reservationNo)));
 	}
 	
 	/* 4. 예약 등록 (회원) */

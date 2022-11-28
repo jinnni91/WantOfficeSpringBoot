@@ -1,6 +1,7 @@
 package com.project.office.reservation.entity;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,9 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.project.office.member.dto.MemberDTO;
+
 import com.project.office.member.entity.Member;
-import com.project.office.room.dto.RoomDTO;
 import com.project.office.room.entity.Room;
 
 import lombok.Getter;
@@ -41,7 +41,7 @@ public class Reservation {
 	private Integer reservationTime;
 	
 	@Column(name = "RESERVATION_DATE")
-	private Date reservationDate;
+	private LocalDateTime reservationDate;
 	
 	@Column(name = "RESERVATION_STATUS")
 	private String reservationStatus;
