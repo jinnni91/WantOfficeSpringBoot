@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.office.auth.dto.AuthDTO;
 import com.project.office.dept.dto.DeptDTO;
 import com.project.office.position.dto.PositionDTO;
@@ -25,6 +26,7 @@ public class MemberDTO implements UserDetails {
 	private Long memberRest;
 	private PositionDTO position;
 	private DeptDTO dept;
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private java.util.Date memberJoinDate;
 	private AuthDTO auth;
 	private String memberFileUrl;
