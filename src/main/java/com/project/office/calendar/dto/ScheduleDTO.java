@@ -1,7 +1,7 @@
 package com.project.office.calendar.dto;
 
-import com.project.office.dept.entity.Dept;
-import com.project.office.member.entity.Member;
+import com.project.office.dept.dto.DeptDTO;
+import com.project.office.member.dto.MemberDTO;
 
 import lombok.Data;
 
@@ -18,6 +18,6 @@ public class ScheduleDTO {
 	private String scheduleColor;
 	private String schedulePlace;
 	private String scheduleContent;
-	private Member member;
-	private Dept dept;
+	private MemberDTO member;
+	private DeptDTO dept;
 }
