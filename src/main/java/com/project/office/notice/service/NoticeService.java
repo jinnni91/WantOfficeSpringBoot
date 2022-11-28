@@ -82,8 +82,7 @@ public class NoticeService {
 		oriNotice.update(noticeDTO.getNoticeTitle(),
 				noticeDTO.getNoticeContent(),
 				noticeDTO.getNoticeUpdate(),
-				noticeDTO.getNoticeDelete(),
-				noticeDTO.getNoticeType());
+				noticeDTO.getNoticeDelete());
 		
 		noticeRepository.save(oriNotice);
 		

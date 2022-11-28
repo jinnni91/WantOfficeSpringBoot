@@ -17,6 +17,4 @@ public class NoticeDTO {
 	private Date noticeUpdate;
 	private Date noticeDelete;
 	private String noticeStatus;
-	private String noticeType;
-//	private Dept dept;
 }
