@@ -60,21 +60,15 @@ public class AuthService {
 			throw new DuplicatedUsernameException("중복된 이메일입니다.");
 		} 
 		
+		if(memberDto.getMemberImage() != null) {
 		try {
 			replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR, imageName, memberDto.getMemberImage());
 			memberDto.setMemberFileUrl(replaceFileName);
 			
 			log.info("[AuthService] replaceFileName : {}", replaceFileName);
 			
-			memberRepository.save(modelMapper.map(memberDto, Member.class));
-			
 			Position position = positionRepository.findById(memberDto.getPosition().getPositionNo()).orElseThrow(() -> new RuntimeException(""));
 			memberDto.setMemberRest(position.getPositionRest());
-				
-			if(position.getPositionNo() < 5) {
-				memberDto.getAuth().setAuthNo((long) 2);
-			log.info("[AuthService] setAuthNo : {}", memberDto.getAuth().getAuthNo());
-			}
 			
 			memberDto.setMemberPassword(passwordEncoder.encode(memberDto.getMemberPassword()));
 			memberRepository.save(modelMapper.map(memberDto, Member.class));
@@ -87,6 +81,7 @@ public class AuthService {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
+		}
 		}
 					
 		log.info("[AuthService] signup End ===========================");

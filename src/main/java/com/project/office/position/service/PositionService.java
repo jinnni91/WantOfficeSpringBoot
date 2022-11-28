@@ -1,16 +1,13 @@
 package com.project.office.position.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.project.office.dept.dto.DeptDTO;
-import com.project.office.dept.entity.Dept;
 import com.project.office.position.dto.PositionDTO;
 import com.project.office.position.entity.Position;
 import com.project.office.position.repository.PositionRepository;
@@ -42,18 +39,11 @@ public class PositionService {
 	}
 
 	// 전체 직위 목록 조회
-	public Page<PositionDTO> positionList(int page) {
-		log.info("[PositionService] positionList start ===========================");
+	public List<PositionDTO> positionList() {
+
+		List<Position> position = positionRepository.findAll();
 		
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("positionNo").ascending());
-		
-		Page<Position> positionList = positionRepository.findAll(pageable);
-		Page<PositionDTO> positionDtoList = positionList.map(position -> modelMapper.map(position, PositionDTO.class));
-		
-		log.info("[PositionService] positionDtoList : {}", positionDtoList.getContent());
-		log.info("[PositionService] positionList End ===========================");
-		
-		return positionDtoList;
+		return position.stream().map(p -> modelMapper.map(p, PositionDTO.class)).collect(Collectors.toList());
 	}
 
 	// 직위 삭제

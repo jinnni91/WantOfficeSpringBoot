@@ -1,5 +1,8 @@
 package com.project.office.dept.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -40,18 +43,11 @@ public class DeptService {
 	}
 	
 	// 전체 부서 목록 조회
-	public Page<DeptDTO> deptList(int page) {
-		log.info("[DeptService] deptList start ===========================");
+	public List<DeptDTO> deptList() {
 		
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("deptNo").ascending());
+		List<Dept> dept = deptRepository.findAll();
 		
-		Page<Dept> deptList = deptRepository.findAll(pageable);
-		Page<DeptDTO> deptDtoList = deptList.map(dept -> modelMapper.map(dept, DeptDTO.class));
-		
-		log.info("[DeptService] deptDtoList : {}", deptDtoList.getContent());
-		log.info("[DeptService] deptList End ===========================");
-		
-		return deptDtoList;
+		return dept.stream().map(d -> modelMapper.map(d, DeptDTO.class)).collect(Collectors.toList());
 
 	}
 
