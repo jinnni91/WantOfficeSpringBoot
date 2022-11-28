@@ -1,7 +1,6 @@
 package com.project.office.calendar.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -9,9 +8,12 @@ import javax.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import com.project.office.calendar.Repository.ScheduleRepository;
 import com.project.office.calendar.dto.ScheduleDTO;
 import com.project.office.calendar.entity.Schedule;
+import com.project.office.calendar.repository.ScheduleRepository;
+import com.project.office.dept.entity.Dept;
+import com.project.office.member.dto.MemberDTO;
+import com.project.office.member.entity.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,18 +29,22 @@ public class ScheduleService {
 		this.modelMapper = modelMapper;
 	}
 	
-	public List<ScheduleDTO> scheduleList(String scheduleSort) {
+	public List<ScheduleDTO> scheduleList(MemberDTO member) {
 		
-//		log.info("[ScheduleService] scheduleSort : {} ", scheduleSort );
+//		log.info("[ScheduleService] scheduleSort : {} ", scheduleDTO );
 		
-		List<Schedule> scheduleList = scheduleRepository.findByScheduleSort(scheduleSort);
+		List<Schedule> scheduleList = scheduleRepository.findByMember(modelMapper.map(member, Member.class));
 
 //		log.info("[ScheduleService] scheduleList : {} ", scheduleList );
+		
+//		List<ScheduleDTO> test = scheduleList.stream().map(schedule -> modelMapper.map(schedule, ScheduleDTO.class)).collect(Collectors.toList());
+		
+//		log.info("[ScheduleService] test : {}", test);
 		
 		return scheduleList.stream().map(schedule -> modelMapper.map(schedule, ScheduleDTO.class)).collect(Collectors.toList());
 	}
 
-	public ScheduleDTO Selectschedule(Long scheduleNo) {
+	public ScheduleDTO selectschedule(Long scheduleNo) {
 
 //		log.info("[ScheduleService] scheduleSort : {} ", scheduleNo );
 		
@@ -75,16 +81,20 @@ public class ScheduleService {
 				scheduleDTO.getScheduleColor(),
 				scheduleDTO.getSchedulePlace(),
 				scheduleDTO.getScheduleContent(),
-				scheduleDTO.getDept());
+				modelMapper.map(scheduleDTO.getDept(), Dept.class));
+		
+		log.info("[ScheduleService] scheduleDTO : {}", newSchedule);
 		
 		scheduleRepository.save(newSchedule);
 		
 		return scheduleDTO;
 	}
 
-//	public Object deleteSchedule(Long scheduleNo) {
-//
-//		return null;
-//	}
+	public Object deleteSchedule(Long scheduleNo) {
+		
+		scheduleRepository.delete(scheduleRepository.findByScheduleNo(scheduleNo));
+
+		return null;
+	}
 
 }

@@ -2,6 +2,7 @@ package com.project.office.calendar.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.office.calendar.dto.ScheduleDTO;
 import com.project.office.calendar.service.ScheduleService;
 import com.project.office.common.ResponseDTO;
+import com.project.office.member.dto.MemberDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,11 +31,11 @@ public class ScheduleController {
 	}
 	
 	@GetMapping("/calendar")
-	public ResponseEntity<ResponseDTO> scheduleList (String scheduleSort) {
+	public ResponseEntity<ResponseDTO> scheduleList (@AuthenticationPrincipal MemberDTO member) {
 		
-//		log.info("[ScheduleController] schedeuleSort : {} ", scheduleSort );
+		log.info("[ScheduleController] schedeuleSort : {} ", member );
 		
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", scheduleService.scheduleList(scheduleSort)));
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "캘린더 조회 성공", scheduleService.scheduleList(member)));
 	}
 	
 	@GetMapping("/calendar/{scheduleNo}")
@@ -41,7 +43,7 @@ public class ScheduleController {
 		
 //		log.info("[ScheduleController] scheduleNo : {} ", scheduleNo);
 		
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상세 조회 성공", scheduleService.Selectschedule(scheduleNo)));
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "상세 조회 성공", scheduleService.selectschedule(scheduleNo)));
 	}
 	
 	@PostMapping("/calendar")
@@ -53,17 +55,19 @@ public class ScheduleController {
 	}
 	
 	@PutMapping("/calendar")
-	public ResponseEntity<ResponseDTO> updateSchedule (@ModelAttribute ScheduleDTO scheduleDTO) {
+	public ResponseEntity<ResponseDTO> updateSchedule (@AuthenticationPrincipal MemberDTO member, @ModelAttribute ScheduleDTO scheduleDTO) {
+		
+		scheduleDTO.setMember(member);
 		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "일정 수정 성공", scheduleService.updateSchedule(scheduleDTO)));
 	}
 	
-//	@DeleteMapping("/calendar")
-//	public ResponseEntity<ResponseDTO> deleteSchedule (Long scheduleNo) {
-//		
-//		scheduleService.deleteSchedule(scheduleNo);
-//		
-//		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "일정 삭제 성공", null));
-//	}
+	@DeleteMapping("/calendar")
+	public ResponseEntity<ResponseDTO> deleteSchedule (Long scheduleNo) {
+		
+		scheduleService.deleteSchedule(scheduleNo);
+		
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "일정 삭제 성공", null));
+	}
 
 }
