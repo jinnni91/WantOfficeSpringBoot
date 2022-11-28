@@ -1,9 +1,17 @@
 package com.project.office.reservation.service;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.query.Query;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -39,7 +47,7 @@ public class ReservationService {
 	private String IMAGE_URL;
 	
 	/* 1. 회의실 예약 전체 목록 조회(회원) */
-	public Page<ReservationDTO> selectReservationList(int page) {
+	public Page<ReservationDTO> selectReservationMList(int page) {
 		log.info("[ReservationService] selectReservationList start============");
 		
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("reservationNo").descending());
@@ -71,7 +79,7 @@ public class ReservationService {
 	}
 	
 	/* 3. 회의실 예약 상세 조회(회원)*/
-	public ReservationDTO selectReservation(Long reservationNo) {
+	public ReservationDTO selectReservationListForAdmin(Long reservationNo) {
 		log.info("[ReservationService] selectReservation start============");
 		log.info("[ReservationService] reservationNo : {}", reservationNo);
 		
@@ -79,7 +87,6 @@ public class ReservationService {
 				.orElseThrow(() -> new IllegalArgumentException("해당 예약사항이 없습니다. reservationNo=" + reservationNo));
 		
 		ReservationDTO reservationDTO = modelMapper.map(reservation, ReservationDTO.class);
-//		reservationDTO.setRoomImageUrl(IMAGE_URL + reservationDTO.getRoomImageUrl());
 		
 		log.info("[ReservationService] reservationDTO : {}", reservationDTO);
 		
@@ -158,6 +165,24 @@ public class ReservationService {
 		Reservation deleteReservation = reservationRepository.findById(reservationNo).get();
 		reservationRepository.delete(deleteReservation);
 		
+	}
+	
+	/* 3. 회의실 예약 조회 */
+	public ReservationDTO selectReservationList(Room room) {
+		log.info("[ReservationService] selectRoomReservationList start============");
+		log.info("[ReservationService] room : {}", room);
+		
+		Long roomNo = room.getRoomNo();
+
+		LocalDateTime start = LocalDate.now().atStartOfDay();
+		LocalDateTime end = LocalDateTime.now().with(LocalTime.MAX);
+
+		List<Reservation> reservation = reservationRepository.findByRoomAndReservationDate(start, end, roomNo)
+				.orElseThrow(() -> new RuntimeException("오늘 예약이 존재하지 않습니다."));
+		
+		log.info("[ReservationService] selectselectRoomReservation end============");
+		
+		return modelMapper.map(reservation, ReservationDTO.class);
 	}
 	
 

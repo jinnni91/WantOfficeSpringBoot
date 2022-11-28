@@ -48,4 +48,5 @@ public class Room {
 		this.roomCapacity = roomCapacity;
 		this.roomFileUrl = roomFileUrl;
 	}
+
 }

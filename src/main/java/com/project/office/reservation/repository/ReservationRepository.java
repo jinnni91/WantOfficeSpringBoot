@@ -1,6 +1,8 @@
 package com.project.office.reservation.repository;
 
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -28,6 +30,14 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 			"WHERE re.reservationNo = :reservationNo " +
 			 "AND re.reservationStatus = '예약가능'")
 	Optional<Reservation> findByReservationNo(@Param("reservationNo")Long reservationNo);
+	
+	/* 3-1. 예약 조회(회의실 별) */
+	@Query("SELECT re " +
+			 "FROM Reservation re " +
+			"WHERE re.reservationNo = reservationNo " +
+			 "AND (re.reservationDate >= :start and re.reservationDate < :end and re.room.roomNo = :roomNo)")
+	Optional<List<Reservation>> findByRoomAndReservationDate(@Param("start")LocalDateTime start, @Param("end")LocalDateTime end, @Param("roomNo")Long roomNo);
+
 	
 	
 	
