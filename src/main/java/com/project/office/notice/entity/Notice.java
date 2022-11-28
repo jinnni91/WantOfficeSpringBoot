@@ -56,13 +56,9 @@ public class Notice {
 	
 	@Column(name = "NOTICE_STATUS")
 	private String noticeStatus;
-	
-	@Column(name = "NOTICE_TYPE")
-	private String noticeType;
 
 	public void update( String noticeContent, String noticeTitle,
-				java.util.Date noticeUpdate, java.util.Date noticeDelete,
-				String noticeType) {
+				java.util.Date noticeUpdate, java.util.Date noticeDelete) {
 		
 
 
@@ -70,13 +66,8 @@ public class Notice {
 		this.noticeTitle = noticeTitle;
 		this.noticeUpdate = noticeUpdate;
 		this.noticeDelete = noticeDelete;
-		this.noticeType = noticeType;
 		
 	}
 	
-//	@ManyToOne
-//	@JoinColumn(name = "DEPT_NO")
-//	private Dept dept;
-
 	
 }
