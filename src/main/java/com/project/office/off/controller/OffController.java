@@ -158,5 +158,13 @@ public class OffController {
 		
 	}
 	
+	/* 연차 수정 */
+	@PatchMapping("/off/modify/{offNo}")
+	public ResponseEntity<ResponseDTO> updateOff(@AuthenticationPrincipal MemberDTO member, @PathVariable Long offNo, @RequestBody OffDTO offDTO) {
+		
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "연차 수정 완료", offService.updateOff(member, offNo, offDTO)));
+		
+	}
+	
 
 }

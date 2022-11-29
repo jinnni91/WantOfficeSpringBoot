@@ -83,4 +83,12 @@ public class Member {
 		this.memberFileUrl = memberFileUrl;
 	}
 	
+	public void updateForCard(String memberName, String memberPhone, String memberEmail) {
+		
+		this.memberName = memberName;
+		this.memberPhone = memberPhone;
+		this.memberEmail = memberEmail;
+		
+	}
+	
 }

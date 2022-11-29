@@ -1,5 +1,7 @@
 package com.project.office.off.dto;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.office.member.dto.MemberDTO;
 
@@ -10,7 +12,7 @@ public class OffDTO {
 	
 	private Long offNo;
 	private String offDate;
-	private java.util.Date offUpdate;
+	private LocalDateTime offUpdate;
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private java.util.Date offStart;
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")

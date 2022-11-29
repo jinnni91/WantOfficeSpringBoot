@@ -1,5 +1,9 @@
 package com.project.office.off.service;
 
+import java.time.LocalDateTime;
+
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -65,6 +69,7 @@ public class OffService {
 	}
 
 	/* 연차 신청 */
+	@Transactional
 	public OffDTO insertOff(OffDTO offDTO) {
 		
 		log.info("[OffService] insertOff Start ====================");
@@ -112,6 +117,7 @@ public class OffService {
 	}
 
 	/* 연차 승인 처리 */
+	@Transactional
 	public OffDTO appOff(OffDTO offDTO) {
 		
 		log.info("[OffService] appOff Start ====================");
@@ -131,6 +137,7 @@ public class OffService {
 	}
 
 	/* 연차 반려 처리 */
+	@Transactional
 	public OffDTO returnOff(OffDTO offDTO) {
 
 		log.info("[OffService] returnOff Start ====================");
@@ -144,6 +151,28 @@ public class OffService {
 		offRepository.save(foundOff);
 		
 		log.info("[OffService] returnOff End ====================");
+		
+		return offDTO;
+		
+	}
+
+	/* 연차 수정 */
+	public OffDTO updateOff(MemberDTO member, Long offNo, OffDTO offDTO) {
+		
+		log.info("[OffService] updateOff Start ====================");
+		log.info("[OffService] offNo : ", offNo);
+		
+		Off foundOff = offRepository.findByMemberAndOffNo(member.getMemberNo(), offNo)
+				.orElseThrow(() -> new IllegalArgumentException("해당 연차가 존재하지 않습니다."));
+		
+		foundOff.update(offDTO.getOffStart(), offDTO.getOffEnd(), offDTO.getOffTitle(), offDTO.getOffReason());
+		
+		LocalDateTime today = LocalDateTime.now();
+		foundOff.setOffUpdate(today);
+		
+		offRepository.save(foundOff);
+		
+		log.info("[OffService] updateOff End ====================");
 		
 		return offDTO;
 		
