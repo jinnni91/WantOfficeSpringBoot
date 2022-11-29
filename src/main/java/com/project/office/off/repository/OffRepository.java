@@ -22,8 +22,8 @@ public interface OffRepository extends JpaRepository<Off, Long> {
 	/* 결과별 연차 신청 목록 조회(결재권자) */
 	@Query("SELECT o " +
 			 "FROM Off o " +
-			"WHERE o.offResult = :offResult"
+			"WHERE o.offResult = :offResult and o.member.dept.deptNo = :deptNo"
 			)
-	Page<Off> findByOffResult(@Param("offResult") String offResult, Pageable pageable);
+	Page<Off> findByOffResult(@Param("deptNo") Long deptNo, @Param("offResult") String offResult, Pageable pageable);
 
 }

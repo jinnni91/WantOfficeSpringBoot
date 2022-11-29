@@ -9,8 +9,7 @@ import lombok.Data;
 public class OffDTO {
 	
 	private Long offNo;
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-	private java.util.Date offDate;
+	private String offDate;
 	private java.util.Date offUpdate;
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private java.util.Date offStart;
