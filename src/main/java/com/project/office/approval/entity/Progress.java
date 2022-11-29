@@ -1,5 +1,6 @@
 package com.project.office.approval.entity;
 import java.sql.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 
 import com.project.office.member.entity.Member;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,9 +22,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
 @Table(name = "TBL_PROGRESS")
 @SequenceGenerator(name = "DP_SEQ_GENERATOR",
-
 sequenceName = "SEQ_DP_NO",
 initialValue = 1, allocationSize = 1)
 public class Progress {
@@ -51,9 +53,15 @@ public class Progress {
 	@JoinColumn(name = "MEMBER_NO")
 	private Member member;
 	
-	@ManyToOne
-	@JoinColumn(name = "DOC_NO")
-	private Document document;
+//	@ManyToOne
+//	@JoinColumn(name = "DOC_NO")
+//	private Document document;
+	
+	@Column(name = "DOC_NO")
+	private Long docNo;
+	
+	
+	
 	
 
 

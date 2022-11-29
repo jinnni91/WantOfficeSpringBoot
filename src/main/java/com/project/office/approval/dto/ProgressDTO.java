@@ -17,6 +17,6 @@ public class ProgressDTO {
 	private Long dpOrderNo;
 	
 	private MemberDTO member;
-	private Document document;
-
+	//private Document document;
+	private Long docNo;
 }
