@@ -55,33 +55,33 @@ public class AuthService {
 		String imageName = UUID.randomUUID().toString().replace("-","");
 		String replaceFileName = null;
 		
-		if(memberRepository.findByMemberEmail(memberDto.getMemberEmail()) != null) {
-			log.info("[AuthService] 중복된 이메일입니다.");
-			throw new DuplicatedUsernameException("중복된 이메일입니다.");
-		} 
+//		if(memberRepository.findByMemberEmail(memberDto.getMemberEmail()) != null) {
+//			log.info("[AuthService] 중복된 이메일입니다.");
+//			throw new DuplicatedUsernameException("중복된 이메일입니다.");
+//		} 
 		
 		if(memberDto.getMemberImage() != null) {
-		try {
-			replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR, imageName, memberDto.getMemberImage());
-			memberDto.setMemberFileUrl(replaceFileName);
-			
-			log.info("[AuthService] replaceFileName : {}", replaceFileName);
-			
-			Position position = positionRepository.findById(memberDto.getPosition().getPositionNo()).orElseThrow(() -> new RuntimeException(""));
-			memberDto.setMemberRest(position.getPositionRest());
-			
-			memberDto.setMemberPassword(passwordEncoder.encode(memberDto.getMemberPassword()));
-			memberRepository.save(modelMapper.map(memberDto, Member.class));
-			
-		} catch (IOException e) {			
-			e.printStackTrace();
-			
 			try {
-				FileUploadUtils.deleteFile(IMAGE_DIR, replaceFileName);
-			} catch (IOException e1) {
-				e1.printStackTrace();
+				replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR, imageName, memberDto.getMemberImage());
+				memberDto.setMemberFileUrl(replaceFileName);
+				
+				log.info("[AuthService] replaceFileName : {}", replaceFileName);
+				
+				Position position = positionRepository.findById(memberDto.getPosition().getPositionNo()).orElseThrow(() -> new RuntimeException(""));
+				memberDto.setMemberRest(position.getPositionRest());
+				
+				memberDto.setMemberPassword(passwordEncoder.encode(memberDto.getMemberPassword()));
+				memberRepository.save(modelMapper.map(memberDto, Member.class));
+				
+			} catch (IOException e) {			
+				e.printStackTrace();
+				
+				try {
+					FileUploadUtils.deleteFile(IMAGE_DIR, replaceFileName);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
-		}
 		}
 					
 		log.info("[AuthService] signup End ===========================");

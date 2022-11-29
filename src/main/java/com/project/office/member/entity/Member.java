@@ -25,7 +25,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "TBL_MEMBER")
-@SequenceGenerator(name = "MEMBER_SEQ_GENERATOR", sequenceName = "SEQ_MEMBER_NO", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "MEMBER_SEQ_GENERATOR", sequenceName = "SEQ_MEMBER_NO", initialValue = 4, allocationSize = 1)
 @DynamicInsert
 public class Member {
 
