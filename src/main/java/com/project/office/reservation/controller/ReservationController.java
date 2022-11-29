@@ -2,6 +2,8 @@ package com.project.office.reservation.controller;
 
 
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import com.project.office.common.paging.PagingButton;
 import com.project.office.common.paging.ResponseDTOWithPaging;
 import com.project.office.common.paging.pagenation;
 import com.project.office.reservation.dto.ReservationDTO;
+import com.project.office.reservation.entity.Reservation;
 import com.project.office.reservation.service.ReservationService;
 import com.project.office.room.dto.RoomDTO;
 import com.project.office.room.entity.Room;
@@ -63,7 +66,7 @@ public class ReservationController {
 	public ResponseEntity<ResponseDTO> selectSearchList(@RequestParam(name= "page", defaultValue="1")int page, @RequestParam(name="search") String reservationStatus){
 		log.info("[ReservationController] selectSearchList start ============ ");
 		log.info("[ReservationController] page: {} ", page);
-		log.info("[ReservationController] reservationDate : {}", reservationStatus);
+		log.info("[ReservationController] reservationStatus : {}", reservationStatus);
 		
 		Page<ReservationDTO> reservationDTOList = reservationService.selectReservationListByReservationStatus(page, reservationStatus);
 		
@@ -87,6 +90,8 @@ public class ReservationController {
 		log.info("[ReservationController] selectReservationList start=========");
 		log.info("[ReservationController] room : {}", roomNo);
 		
+		List<ReservationDTO> reservation = reservationService.selectReservationList(roomNo);
+		
 		log.info("[ReservationController] selectReservationList end=========");
 		
 		return ResponseEntity
@@ -95,8 +100,8 @@ public class ReservationController {
 	}
 	
 	
-	/* 3-1. 예약 상세 조회(관리자) */
-	@GetMapping("/rvlists-management/{reservationNo}")
+	/* 3-1. 예약 상세 조회(회원) */
+	@GetMapping("/rvlists/{reservationNo}")
 	public ResponseEntity<ResponseDTO> selectReservationDetail(@PathVariable Long reservationNo) {
 		
 		return ResponseEntity

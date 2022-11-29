@@ -28,7 +28,7 @@ import lombok.Setter;
 @Table(name = "TBL_RESERVATION")
 @SequenceGenerator(name = "RESERVATION_SEQ_GENERATOR",
 					sequenceName = "SEQ_RESERVATION_NO",
-					initialValue = 1,
+					initialValue = 9,
 					allocationSize = 1)
 public class Reservation {
 
