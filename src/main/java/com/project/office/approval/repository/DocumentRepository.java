@@ -1,32 +1,25 @@
 package com.project.office.approval.repository;
 
 import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.project.office.approval.entity.Document;
-import com.project.office.approval.entity.Progress;
 
 public interface DocumentRepository extends JpaRepository<Document, Long>{
 
-	
-	// 기안자 : 결재 조회
-//	@EntityGraph(attributePaths= {"progress","member"}, type = EntityGraph.EntityGraphType.LOAD)
-	
-	
-//	Page<Document> findByDocStatus(Pageable pageable, String docStatus);
+	@Query("select d "
+			+ "from Document d "
+			+ "where "
+			+ "d.member.memberNo =:memberNo")
+	Page<Document> findAll(Pageable page, @Param("memberNo")Long memberNo);
 
-//	@EntityGraph(attributePaths= {"progress"})
-	//Page<Document> findByprogressAndDocStatus(Pageable pageable, Optional<Progress> findProgress ,String docStatus);
-
-	
-	
-//	@EntityGraph(attributePaths= {"progress"})
-//	Page<Document> findByAll(Pageable pageable);
-////	
-//	Document findByAll();
-
+	@Query("select d "
+			+ "from Document "
+			+ "d where d.docNo =:docNo" )
+	Optional<Document> findBydocNo(@Param("docNo") Long docNo);
 	
 }
