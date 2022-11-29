@@ -78,13 +78,15 @@ public class OffService {
 	}
 
 	/* 결과별 연차 신청 목록 조회(결재권자) */
-	public Page<OffDTO> getOffListForApp(String offResult, int page) {
+	public Page<OffDTO> getOffListForApp(MemberDTO member, String offResult, int page) {
 		
 		log.info("[OffService] getOffList Start ====================");
 		
+		Long deptNo = member.getDept().getDeptNo();
+		
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("offNo").descending());
 		
-		Page<Off> offList = offRepository.findByOffResult(offResult, pageable);
+		Page<Off> offList = offRepository.findByOffResult(deptNo, offResult, pageable);
 		Page<OffDTO> offDTOList = offList.map(off -> modelMapper.map(off, OffDTO.class));
 		
 		log.info("[OffService] getOffList End ====================");
@@ -100,10 +102,48 @@ public class OffService {
 		log.info("[OffService] offNo : {}", offNo);
 		
 		Off off = offRepository.findById(offNo)
-				.orElseThrow(() -> new IllegalArgumentException("해당 연차가 존재하지 않습니다. offNo=" + offNo));
+				.orElseThrow(() -> new RuntimeException("해당 연차가 존재하지 않습니다."));
 		OffDTO offDTO = modelMapper.map(off, OffDTO.class);
 		
 		log.info("[OffService] selectOff End ====================");
+		
+		return offDTO;
+		
+	}
+
+	/* 연차 승인 처리 */
+	public OffDTO appOff(OffDTO offDTO) {
+		
+		log.info("[OffService] appOff Start ====================");
+		log.info("[OffService] offDTO : ", offDTO);
+		
+		Off foundOff = offRepository.findById(offDTO.getOffNo())
+				.orElseThrow(() -> new RuntimeException("해당 연차가 존재하지 않습니다."));
+		
+		foundOff.setOffResult("승인");
+		
+		offRepository.save(foundOff);
+		
+		log.info("[OffService] appOff End ====================");
+		
+		return offDTO;
+		
+	}
+
+	/* 연차 반려 처리 */
+	public OffDTO returnOff(OffDTO offDTO) {
+
+		log.info("[OffService] returnOff Start ====================");
+		log.info("[OffService] offDTO : ", offDTO);
+		
+		Off foundOff = offRepository.findById(offDTO.getOffNo())
+				.orElseThrow(() -> new RuntimeException("해당 연차가 존재하지 않습니다."));
+		
+		foundOff.setOffResult("반려");
+		
+		offRepository.save(foundOff);
+		
+		log.info("[OffService] returnOff End ====================");
 		
 		return offDTO;
 		

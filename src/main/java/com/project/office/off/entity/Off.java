@@ -59,5 +59,16 @@ public class Off {
 	@ManyToOne
 	@JoinColumn(name = "APP_AUTH_NO")
 	private Member approval;
+	
+	public void update(java.util.Date offUpdate, java.util.Date offStart, java.util.Date offEnd,
+			String offTitle, String offReason) {
+		
+		this.offUpdate = offUpdate;
+		this.offStart = offStart;
+		this.offEnd = offEnd;
+		this.offTitle = offTitle;
+		this.offReason = offReason;
+		
+	}
 
 }
