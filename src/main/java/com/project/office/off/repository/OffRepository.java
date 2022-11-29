@@ -1,5 +1,7 @@
 package com.project.office.off.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -25,5 +27,13 @@ public interface OffRepository extends JpaRepository<Off, Long> {
 			"WHERE o.offResult = :offResult and o.member.dept.deptNo = :deptNo"
 			)
 	Page<Off> findByOffResult(@Param("deptNo") Long deptNo, @Param("offResult") String offResult, Pageable pageable);
+
+	/* 연차 수정을 위한 조회 */
+	@EntityGraph(attributePaths= {"member"})
+	@Query("SELECT o " + 
+			 "FROM Off o " +
+			"WHERE o.member.memberNo = :memberNo and o.offNo = :offNo"
+			)
+	Optional<Off> findByMemberAndOffNo(@Param("memberNo") Long memberNo, @Param("offNo") Long offNo);
 
 }

@@ -1,5 +1,7 @@
 package com.project.office.off.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,7 +37,7 @@ public class Off {
 	private java.util.Date offDate;
 	
 	@Column(name = "OFF_UPDATE")
-	private java.util.Date offUpdate;
+	private LocalDateTime offUpdate;
 	
 	@Column(name = "OFF_START")
 	private java.util.Date offStart;
@@ -60,10 +62,8 @@ public class Off {
 	@JoinColumn(name = "APP_AUTH_NO")
 	private Member approval;
 	
-	public void update(java.util.Date offUpdate, java.util.Date offStart, java.util.Date offEnd,
-			String offTitle, String offReason) {
+	public void update(java.util.Date offStart, java.util.Date offEnd, String offTitle, String offReason) {
 		
-		this.offUpdate = offUpdate;
 		this.offStart = offStart;
 		this.offEnd = offEnd;
 		this.offTitle = offTitle;

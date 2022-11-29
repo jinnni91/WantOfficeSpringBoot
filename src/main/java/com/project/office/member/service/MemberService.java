@@ -137,6 +137,45 @@ public class MemberService {
 		return memberDto;
 	}
 	
-	
+	/* 내 명함 조회 */
+	public MemberDTO selectMyCard(MemberDTO member) {
+		
+		log.info("[MemberService] selectMyCard Start ===========");
+		log.info("[MemberService] member : {}", member);
+		
+		Member foundMember = memberRepository.findById(member.getMemberNo())
+				.orElseThrow(() -> new IllegalArgumentException("해당 사원이 존재하지 않습니다."));
+		MemberDTO memberDTO = modelMapper.map(foundMember, MemberDTO.class);
+		
+		log.info("[MemberService] selectMyCard End ===========");
+		
+		return memberDTO;
+		
+		
+	}
+
+	/* 내 명함 수정 */
+	@Transactional
+	public MemberDTO updateMyCard(MemberDTO member) {
+		
+		log.info("[MemberService] updateMyCard Start ===========");
+		log.info("[MemberService] member : {}", member);
+		
+		Member oriMember = memberRepository.findById(member.getMemberNo())
+				.orElseThrow(() -> new IllegalArgumentException("해당 사원이 존재하지 않습니다."));
+		
+		oriMember.updateForCard(
+				member.getMemberName(),
+				member.getMemberPhone(),
+				member.getMemberEmail()
+				);
+		memberRepository.save(oriMember);
+		
+		
+		log.info("[MemberService] updateMyCard End ===========");
+		
+		return member;
+		
+	}
 
 }
