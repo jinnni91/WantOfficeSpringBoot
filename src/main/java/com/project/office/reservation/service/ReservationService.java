@@ -88,6 +88,27 @@ public class ReservationService {
 		log.info("[ReservationService] selectReservation End============");
 		return reservationDTO;
 	}
+	
+	/* 3-1. 회의실 예약 조회 */
+	public List<ReservationDTO> selectReservationList(Long roomNo) {
+		log.info("[ReservationService] selectRoomReservationList start============");
+		log.info("[ReservationService] room : {}", roomNo);
+
+		LocalDateTime start = LocalDate.now().atStartOfDay();
+		LocalDateTime end = LocalDateTime.now().with(LocalTime.MAX);
+		
+		log.info("[ReservationService] start : {},end: {}", start,end);
+		
+		List<Reservation> reservation = reservationRepository.findByRoomAndReservationDate(start, end, roomNo)
+				.orElseThrow(() -> new RuntimeException("오늘 예약이 존재하지 않습니다."));
+		
+		log.info("[ReservationService] reservation : {}", reservation);
+		
+		log.info("[ReservationService] selectRoomReservation end============");
+		
+		return reservation.stream().map(r -> modelMapper.map(r, ReservationDTO.class)).collect(Collectors.toList());
+	}
+	
 
 	/* 4. 회의실 예약 등록 (회원) */
 	@Transactional
@@ -162,27 +183,6 @@ public class ReservationService {
 		
 	}
 	
-	/* 9. 회의실 예약 조회 */
-	public List<ReservationDTO> selectReservationList(Long roomNo) {
-		log.info("[ReservationService] selectRoomReservationList start============");
-		log.info("[ReservationService] room : {}", roomNo);
-		
-		
-
-		LocalDateTime start = LocalDate.now().atStartOfDay();
-		LocalDateTime end = LocalDateTime.now().with(LocalTime.MAX);
-		
-		log.info("[ReservationService] start : {},end: {}", start,end);
-		
-		List<Reservation> reservation = reservationRepository.findByRoomAndReservationDate(start, end, roomNo)
-				.orElseThrow(() -> new RuntimeException("오늘 예약이 존재하지 않습니다."));
-		
-		//log.info("[ReservationService] reservation : {}", reservation);
-		
-		log.info("[ReservationService] selectselectRoomReservation end============");
-		
-		return reservation.stream().map(r -> modelMapper.map(r, ReservationDTO.class)).collect(Collectors.toList());
-	}
 	
 
 	

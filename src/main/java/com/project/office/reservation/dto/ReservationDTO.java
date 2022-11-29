@@ -16,6 +16,7 @@ public class ReservationDTO {
 
 	private Long reservationNo;
 	private Integer reservationTime;
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 	private LocalDateTime reservationDate;
 	private String reservationStatus;
 	private String reservationPurpose;

@@ -35,8 +35,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 	/* 3-1. 예약 조회(회의실) */
 	@Query("SELECT re " +
 			 "FROM Reservation re " +
-			"WHERE re.reservationNo = reservationNo " +
-			 "AND re.reservationDate >= :start and re.reservationDate < :end and re.room.roomNo = :roomNo")
+			"WHERE re.reservationDate >= :start and re.reservationDate < :end and re.room.roomNo = :roomNo")
 	Optional<List<Reservation>> findByRoomAndReservationDate(@Param("start")LocalDateTime start, @Param("end")LocalDateTime end, @Param("roomNo")Long roomNo);
 
 	
