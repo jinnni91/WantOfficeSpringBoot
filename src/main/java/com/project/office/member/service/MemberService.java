@@ -156,25 +156,28 @@ public class MemberService {
 
 	/* 내 명함 수정 */
 	@Transactional
-	public MemberDTO updateMyCard(MemberDTO member) {
+	public MemberDTO updateMyCard(MemberDTO memberDTO, MemberDTO member) {
 		
 		log.info("[MemberService] updateMyCard Start ===========");
+		log.info("[MemberService] memberDTO : {}", memberDTO);
 		log.info("[MemberService] member : {}", member);
 		
-		Member oriMember = memberRepository.findById(member.getMemberNo())
+		Long memberNo = member.getMemberNo();
+		log.info("[MemberService] memberNo : {}", memberNo);
+		
+		Member oriMember = memberRepository.findById(memberNo)
 				.orElseThrow(() -> new IllegalArgumentException("해당 사원이 존재하지 않습니다."));
 		
 		oriMember.updateForCard(
-				member.getMemberName(),
-				member.getMemberPhone(),
-				member.getMemberEmail()
-				);
-		memberRepository.save(oriMember);
+				memberDTO.getMemberName(),
+				memberDTO.getMemberPhone(),
+				memberDTO.getMemberEmail());
 		
+		memberRepository.save(oriMember);
 		
 		log.info("[MemberService] updateMyCard End ===========");
 		
-		return member;
+		return memberDTO;
 		
 	}
 
