@@ -131,11 +131,14 @@ public class ReservationService {
 					() -> new IllegalArgumentException("해당 예약 목록이 없습니다. reservationNo =" + reservationDTO.getReservationNo()));
 			
 		oriReservation.update(reservationDTO.getReservationNo(),
-				reservationDTO.getReservationTime(),
+				reservationDTO.getReservationUseTime(),
 				reservationDTO.getReservationStatus(),
 				reservationDTO.getReservationPurpose(),
+				reservationDTO.getReservationSetting(),
 				reservationDTO.getRoom(),
-				reservationDTO.getMember());
+				reservationDTO.getMember(),
+				reservationDTO.getReservationTime());
+
 		reservationRepository.save(oriReservation);
 		
 		log.info("[ReservationService] updateReservation End============");

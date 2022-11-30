@@ -37,8 +37,8 @@ public class Reservation {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RESERVATION_SEQ_GENERATOR")
 	private Long reservationNo;
 	
-	@Column(name = "RESERVATION_TIME")
-	private Integer reservationTime;
+	@Column(name = "RESERVATION_USE_TIME")
+	private Integer reservationUseTime;
 	
 	@Column(name = "RESERVATION_DATE")
 	private LocalDateTime reservationDate;
@@ -49,8 +49,8 @@ public class Reservation {
 	@Column(name = "RESERVATION_PURPOSE")
 	private String reservationPurpose;
 	
-	@Column(name = "RESERVATION_REMOVE_STATUS")
-	private String reservationRemoveStatus;
+	@Column(name = "RESERVATION_SETTING")
+	private String reservationSetting;
 	
 	@ManyToOne
 	@JoinColumn(name = "ROOM_NO")
@@ -59,16 +59,21 @@ public class Reservation {
 	@ManyToOne
 	@JoinColumn(name = "MEMBER_NO")
 	private Member member;
+	
+	@Column(name = "RESERVATION_TIME")
+	private String reservationTime;
 
-	public void update(Long reservationNo, Integer reservationTime, String reservationStatus,
-			String reservationPurpose, Room room, Member member) {
+	public void update(Long reservationNo, Integer reservationUseTime , String reservationStatus,
+			String reservationPurpose, String reservationSetting,Room room, Member member,String reservationTime) {
 		
 		this.reservationNo = reservationNo;
-		this.reservationTime = reservationTime;
+		this.reservationUseTime = reservationUseTime;
 		this.reservationStatus = reservationStatus;
 		this.reservationPurpose = reservationPurpose;
+		this.reservationSetting = reservationSetting;
 		this.room = room;
 		this.member = member;
+		this.reservationTime = reservationTime;
 		
 	}
 

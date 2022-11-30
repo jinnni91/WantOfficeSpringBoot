@@ -70,7 +70,7 @@ public class RoomController {
 		
 		log.info("[RoomController] RoomDTO: {}", roomDTO);
 		roomService.insertRoomForAdmin(roomDTO);
-		roomDTO.setRoomImage(null);
+		
 		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "회의실 등록 성공", roomDTO));
 	}
