@@ -28,8 +28,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 	/* 3. 예약 상세 조회(회원) */
 	@Query("SELECT re " +
 			 "FROM Reservation re " +
-			"WHERE re.reservationNo = :reservationNo " +
-			 "AND re.reservationStatus = '예약가능'")
+			"WHERE re.reservationNo = :reservationNo ")
 	Optional<Reservation> findByReservationNo(@Param("reservationNo")Long reservationNo);
 	
 	/* 3-1. 예약 조회(회의실) */
