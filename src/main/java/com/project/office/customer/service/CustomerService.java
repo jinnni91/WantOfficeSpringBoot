@@ -1,5 +1,7 @@
 package com.project.office.customer.service;
 
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -44,6 +46,56 @@ public class CustomerService {
 		log.info("[CustomerService] getCustomerList End ===========");
 		
 		return customerDTOList;
+		
+	}
+
+	/* 거래처 명함 등록 */
+	@Transactional
+	public CustomerDTO insertCustomer(CustomerDTO customerDTO) {
+		
+		log.info("[CustomerService] insertCustomer Start ===========");
+		
+		customerDTO.setCustomerDelete("N");
+		
+		customerRepository.save(modelMapper.map(customerDTO, Customer.class));
+		
+		log.info("[CustomerService] insertCustomer End ===========");
+		
+		return customerDTO;
+	}
+
+	/* 거래처 명함 수정 */
+	public CustomerDTO updateCustomer(MemberDTO member, Long customerNo, CustomerDTO customerDTO) {
+		
+		log.info("[CustomerService] updateCustomer Start ===========");
+		log.info("[CustomerService] customerNo : {}", customerNo);
+		
+		Customer foundCustomer = customerRepository.findByMemberAndCustomerNo(member.getMemberNo(), customerNo)
+				.orElseThrow(() -> new IllegalArgumentException("해당 거래처가 존재하지 않습니다."));
+		
+		foundCustomer.update(customerDTO.getCustomerEmployee(), customerDTO.getCustomerPhone(), customerDTO.getCustomerEmail(), customerDTO.getCustomerPosition(), customerDTO.getCustomerShare());
+		
+		customerRepository.save(foundCustomer);
+		
+		log.info("[CustomerService] updateCustomer End ===========");
+		
+		return customerDTO;
+		
+	}
+
+	/* 거래처 명함 상세 조회 */
+	public CustomerDTO selectCustomer(Long customerNo) {
+		
+		log.info("[CustomerService] selectCustomer Start ===========");
+		log.info("[CustomerService] customerNo : {}", customerNo);
+		
+		Customer customer = customerRepository.findById(customerNo)
+				.orElseThrow(() -> new RuntimeException("해당 거래처가 존재하지 않습니다."));
+		CustomerDTO customerDTO = modelMapper.map(customer, CustomerDTO.class);
+		
+		log.info("[CustomerService] selectCustomer End ===========");
+		
+		return customerDTO;
 		
 	}
 	

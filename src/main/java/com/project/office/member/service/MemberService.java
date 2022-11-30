@@ -187,23 +187,40 @@ public class MemberService {
 	}
 	
 	/* 사내 명함 조회(본인 제외) */
-	   public Page<MemberDTO> getCardList(MemberDTO memberDTO, int page) {
+	public Page<MemberDTO> getCardList(MemberDTO memberDTO, int page) {
 	      
-	      log.info("[MemberService] getCardList Start ===========");
+		log.info("[MemberService] getCardList Start ===========");
 	      
-	      Pageable pageable = PageRequest.of(page - 1, 4, Sort.by("memberNo").descending());
+	    Pageable pageable = PageRequest.of(page - 1, 4, Sort.by("memberNo").descending());
 	      
-	      Long memberNo = memberDTO.getMemberNo();
+	    Long memberNo = memberDTO.getMemberNo();
 	      
-	      Page<Member> memberList = memberRepository.findAllWithoutMember(memberNo, pageable);
-	      Page<MemberDTO> memberDTOList = memberList.map(member -> modelMapper.map(member, MemberDTO.class));
+	    Page<Member> memberList = memberRepository.findAllWithoutMember(memberNo, pageable);
+	    Page<MemberDTO> memberDTOList = memberList.map(member -> modelMapper.map(member, MemberDTO.class));
 	      
-	      log.info("[MemberService] memberDTOList : {}", memberDTOList);
+	    log.info("[MemberService] memberDTOList : {}", memberDTOList);
 	      
-	      log.info("[MemberService] getCardList End ===========");
+	    log.info("[MemberService] getCardList End ===========");
 	      
-	      return memberDTOList;
+	    return memberDTOList;
 	      
-	   }
+	}
+	
+	/* 내 명함 상세 조회 */
+	public MemberDTO selectMyCardDetail(MemberDTO memberDTO) {
+		
+		log.info("[MemberService] selectMyCardDetail Start ===========");
+		log.info("[MemberService] memberDTO : {}", memberDTO);
+		
+		Long memberNo = memberDTO.getMemberNo();
+		
+		Member member = memberRepository.findById(memberNo)
+				.orElseThrow(() -> new RuntimeException("해당 사원이 존재하지 않습니다."));
+		
+		log.info("[MemberService] selectMyCardDetail End ===========");
+		
+		return modelMapper.map(member, MemberDTO.class);
+		
+	}
 
 }

@@ -1,5 +1,7 @@
 package com.project.office.customer.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -15,5 +17,11 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 	@EntityGraph(attributePaths= {"member"})
 	@Query("select c from Customer c where (c.member.memberNo = :memberNo) or (c.member.dept.deptNo = :deptNo and c.customerShare = 'Y')")
 	Page<Customer> findByMemberAndDeptAndShare(@Param("memberNo") Long memberNo, @Param("deptNo") Long deptNo, Pageable pageable);
+
+	
+	/* 거래처 명함 수정을 위한 조회 */
+	@EntityGraph(attributePaths= {"member"})
+	@Query("select c from Customer c where c.member.memberNo = :memberNo and c.customerNo = :customerNo")
+	Optional<Customer> findByMemberAndCustomerNo(@Param("memberNo") Long memberNo, @Param("customerNo") Long customerNo);
 	
 }
