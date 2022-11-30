@@ -7,6 +7,10 @@ import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -180,5 +184,25 @@ public class MemberService {
 		return memberDTO;
 		
 	}
+	
+	/* 사내 명함 조회(본인 제외) */
+	   public Page<MemberDTO> getCardList(MemberDTO memberDTO, int page) {
+	      
+	      log.info("[MemberService] getCardList Start ===========");
+	      
+	      Pageable pageable = PageRequest.of(page - 1, 4, Sort.by("memberName").ascending());
+	      
+	      Long memberNo = memberDTO.getMemberNo();
+	      
+	      Page<Member> memberList = memberRepository.findAllWithoutMember(memberNo, pageable);
+	      Page<MemberDTO> memberDTOList = memberList.map(member -> modelMapper.map(member, MemberDTO.class));
+	      
+	      log.info("[MemberService] memberDTOList : {}", memberDTOList);
+	      
+	      log.info("[MemberService] getCardList End ===========");
+	      
+	      return memberDTOList;
+	      
+	   }
 
 }
