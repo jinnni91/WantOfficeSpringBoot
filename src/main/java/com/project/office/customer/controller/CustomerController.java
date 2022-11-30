@@ -68,7 +68,7 @@ public class CustomerController {
 		
 		log.info("[CustomerController] insertCustomer End =====================");
 		
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "거래처 등록 성공", customerSerive.insertCustomer(customerDTO)));
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "거래처 명함 등록 성공", customerSerive.insertCustomer(customerDTO)));
 		
 	}
 	
@@ -76,7 +76,7 @@ public class CustomerController {
 	@PatchMapping("/customer/modify/{customerNo}")
 	public ResponseEntity<ResponseDTO> updateCustomer(@AuthenticationPrincipal MemberDTO member, @PathVariable Long customerNo, @RequestBody CustomerDTO customerDTO) {
 		
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "거래처 수정 성공", customerSerive.updateCustomer(member, customerNo, customerDTO)));
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "거래처 명함 수정 성공", customerSerive.updateCustomer(member, customerNo, customerDTO)));
 		
 	}
 	
@@ -84,7 +84,15 @@ public class CustomerController {
 	@GetMapping("/customer/{customerNo}")
 	public ResponseEntity<ResponseDTO> selectCustomer(@PathVariable Long customerNo) {
 		
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "거래처 상세 조회 완료", customerSerive.selectCustomer(customerNo)));
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "거래처 명함 상세 조회 완료", customerSerive.selectCustomer(customerNo)));
+		
+	}
+	
+	/* 거래처 명함 삭제 */
+	@PatchMapping("/customer/delete/{customerNo}")
+	public ResponseEntity<ResponseDTO> deleteCustomer(@AuthenticationPrincipal MemberDTO member, @PathVariable Long customerNo, @RequestBody CustomerDTO customerDTO) {
+		
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "거래처 명함 삭제 성공", customerSerive.deleteCustomer(member, customerNo, customerDTO)));
 		
 	}
 	

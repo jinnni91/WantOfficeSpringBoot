@@ -15,11 +15,11 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
 	/* 거래처 명함 조회(부서 공유 거래처 포함) */
 	@EntityGraph(attributePaths= {"member"})
-	@Query("select c from Customer c where (c.member.memberNo = :memberNo) or (c.member.dept.deptNo = :deptNo and c.customerShare = 'Y')")
-	Page<Customer> findByMemberAndDeptAndShare(@Param("memberNo") Long memberNo, @Param("deptNo") Long deptNo, Pageable pageable);
+	@Query("select c from Customer c where (c.member.memberNo = :memberNo and c.customerDelete = 'N') or (c.member.dept.deptNo = :deptNo and c.customerDelete = 'N' and c.customerShare = 'Y')")
+	Page<Customer> findByMemberAndDeptAndShareAndDelete(@Param("memberNo") Long memberNo, @Param("deptNo") Long deptNo, Pageable pageable);
 
 	
-	/* 거래처 명함 수정을 위한 조회 */
+	/* 거래처 명함 수정/삭제를 위한 조회 */
 	@EntityGraph(attributePaths= {"member"})
 	@Query("select c from Customer c where c.member.memberNo = :memberNo and c.customerNo = :customerNo")
 	Optional<Customer> findByMemberAndCustomerNo(@Param("memberNo") Long memberNo, @Param("customerNo") Long customerNo);
