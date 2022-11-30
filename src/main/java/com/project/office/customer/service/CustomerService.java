@@ -38,7 +38,7 @@ public class CustomerService {
 		Long memberNo = memberDTO.getMemberNo();
 		Long deptNo = memberDTO.getDept().getDeptNo();
 		
-		Page<Customer> customerList = customerRepository.findByMemberAndDeptAndShare(memberNo, deptNo, pageable);
+		Page<Customer> customerList = customerRepository.findByMemberAndDeptAndShareAndDelete(memberNo, deptNo, pageable);
 		Page<CustomerDTO> customerDTOList = customerList.map(customer -> modelMapper.map(customer, CustomerDTO.class));
 		
 		log.info("[CustomerService] customerDTOList : {}", customerDTOList);
@@ -98,7 +98,24 @@ public class CustomerService {
 		return customerDTO;
 		
 	}
-	
-	
 
+	/* 거래처 명함 삭제 */
+	public CustomerDTO deleteCustomer(MemberDTO member, Long customerNo, CustomerDTO customerDTO) {
+		
+		log.info("[CustomerService] deleteCustomer Start ===========");
+		log.info("[CustomerService] customerNo : {}", customerNo);
+		
+		Customer foundCustomer = customerRepository.findByMemberAndCustomerNo(member.getMemberNo(), customerNo)
+				.orElseThrow(() -> new IllegalArgumentException("해당 거래처가 존재하지 않습니다."));
+		
+		foundCustomer.setCustomerDelete("Y");
+		
+		customerRepository.save(foundCustomer);
+		
+		log.info("[CustomerService] updateCustomer End ===========");
+		
+		return customerDTO;
+		
+	}
+	
 }
