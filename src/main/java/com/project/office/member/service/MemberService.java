@@ -190,7 +190,7 @@ public class MemberService {
 	      
 	      log.info("[MemberService] getCardList Start ===========");
 	      
-	      Pageable pageable = PageRequest.of(page - 1, 4, Sort.by("memberName").ascending());
+	      Pageable pageable = PageRequest.of(page - 1, 4, Sort.by("memberNo").descending());
 	      
 	      Long memberNo = memberDTO.getMemberNo();
 	      
