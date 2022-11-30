@@ -86,6 +86,7 @@ public class RoomService {
 		
 		try {
 		replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR, imageName, roomDTO.getRoomImage());
+		
 		roomDTO.setRoomFileUrl(replaceFileName);
 		
 		log.info("[RoomService] replaceFileName : {}", replaceFileName);
