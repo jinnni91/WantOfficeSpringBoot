@@ -5,6 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,5 +56,36 @@ public class CustomerController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "거래처 명함 조회 성공", responseDTOWithPaging));
 		
 	}
-
+	
+	/* 거래처 명함 등록 */
+	@PostMapping("/customer")
+	public ResponseEntity<ResponseDTO> insertCustomer(@AuthenticationPrincipal MemberDTO member, @RequestBody CustomerDTO customerDTO) {
+		
+		log.info("[CustomerController] insertCustomer Start =====================");
+		log.info("[CustomerController] insertCustomer member : {}", member);
+		
+		customerDTO.setMember(member);
+		
+		log.info("[CustomerController] insertCustomer End =====================");
+		
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "거래처 등록 성공", customerSerive.insertCustomer(customerDTO)));
+		
+	}
+	
+	/* 거래처 명함 수정 */
+	@PatchMapping("/customer/modify/{customerNo}")
+	public ResponseEntity<ResponseDTO> updateCustomer(@AuthenticationPrincipal MemberDTO member, @PathVariable Long customerNo, @RequestBody CustomerDTO customerDTO) {
+		
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "거래처 수정 성공", customerSerive.updateCustomer(member, customerNo, customerDTO)));
+		
+	}
+	
+	/* 거래처 명함 상세 조회 */
+	@GetMapping("/customer/{customerNo}")
+	public ResponseEntity<ResponseDTO> selectCustomer(@PathVariable Long customerNo) {
+		
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "거래처 상세 조회 완료", customerSerive.selectCustomer(customerNo)));
+		
+	}
+	
 }

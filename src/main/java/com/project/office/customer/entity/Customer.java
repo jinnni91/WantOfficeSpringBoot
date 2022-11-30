@@ -55,5 +55,15 @@ public class Customer {
 	@ManyToOne
 	@JoinColumn(name = "MEMBER_NO")
 	private Member member;
+	
+	public void update(String customerEmployee, String customerPhone, String customerEmail, String customerPosition, String customerShare) {
+		
+		this.customerEmployee = customerEmployee;
+		this.customerPhone = customerPhone;
+		this.customerEmail = customerEmail;
+		this.customerPosition = customerPosition;
+		this.customerShare = customerShare;
+		
+	}
 
 }

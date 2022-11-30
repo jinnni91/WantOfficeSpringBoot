@@ -7,7 +7,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,26 +63,34 @@ public class MemberController {
 	}
 	
 	/* 사내 명함 조회(본인 제외) */
-	   @GetMapping("/members")
-	   public ResponseEntity<ResponseDTO> getCardList(@AuthenticationPrincipal MemberDTO memberDTO, @RequestParam(name="page", defaultValue="1") int page) {
+	@GetMapping("/members")
+	public ResponseEntity<ResponseDTO> getCardList(@AuthenticationPrincipal MemberDTO memberDTO, @RequestParam(name="page", defaultValue="1") int page) {
 	      
-	      log.info("[MemberController] selectCards Start =====================");
-	      log.info("[MemberController] memberDTO : {}", memberDTO);
-	      log.info("[MemberController] page : {}", page);
+		log.info("[MemberController] selectCards Start =====================");
+	    log.info("[MemberController] memberDTO : {}", memberDTO);
+	    log.info("[MemberController] page : {}", page);
 	      
-	      Page<MemberDTO> memberDTOList = memberService.getCardList(memberDTO, page);
+	    Page<MemberDTO> memberDTOList = memberService.getCardList(memberDTO, page);
 	      
-	      PagingButton pageBtn = pagenation.getPagingButton(memberDTOList);
-	      log.info("[MemberController] pageBtn : {}", pageBtn);
+	    PagingButton pageBtn = pagenation.getPagingButton(memberDTOList);
+	    log.info("[MemberController] pageBtn : {}", pageBtn);
 	      
-	      ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
-	      responseDTOWithPaging.setPageBtn(pageBtn);
-	      responseDTOWithPaging.setData(memberDTOList.getContent());
+	    ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+	    responseDTOWithPaging.setPageBtn(pageBtn);
+	    responseDTOWithPaging.setData(memberDTOList.getContent());
 	      
-	      log.info("[MemberController] selectCards End =====================");
+	    log.info("[MemberController] selectCards End =====================");
 	      
-	      return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "사내 명함 조회 성공", responseDTOWithPaging));
+	    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "사내 명함 조회 성공", responseDTOWithPaging));
 	      
-	   }
+	}
+	
+	/* 내 명함 상세 조회 */
+	@GetMapping("/card/detail")
+	public ResponseEntity<ResponseDTO> selectMyCardDetail(@AuthenticationPrincipal MemberDTO memberDTO) {
+		
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "내 명함 상세 조회 완료", memberService.selectMyCardDetail(memberDTO)));
+		
+	}
 	
 }
