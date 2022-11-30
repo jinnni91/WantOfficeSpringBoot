@@ -84,24 +84,25 @@ public class MemberService {
 		}
 	
 	// 내 정보 조회
-	public MemberDTO selectMyInfo(Long memberNo) {
+	public MemberDTO selectMyInfo(MemberDTO member) {
 		log.info("[MemberService] selectMyInfo Start ===========================");
-		log.info("[MemberService] memberNo : {}", memberNo);
+		log.info("[MemberService] member : {}", member);
 		
-		Member member = memberRepository.findByMemberNo(memberNo)
-	            .orElseThrow(() -> new UserNotFoundException(memberNo + "를 찾을 수 없습니다."));
+		Member findmember = memberRepository.findById(member.getMemberNo())
+	            .orElseThrow(() -> new UserNotFoundException(member + "를 찾을 수 없습니다."));
 
 		log.info("[MemberService] member : {}", member);
 		
 		log.info("[MemberService] selectMyInfo End ===========================");
-		return modelMapper.map(member, MemberDTO.class);
+		return modelMapper.map(findmember, MemberDTO.class);
 	}
 
 	// 내 정보 수정
 	@Transactional
-	public MemberDTO updateMyInfo(MemberDTO memberDto) {
+	public MemberDTO updateMyInfo(MemberDTO memberDto, MemberDTO member) {
 		log.info("[MemberService] updateMyInfo Start ===========================");
 		log.info("[MemberService] memberDto : {}", memberDto);
+		log.info("[MemberService] member : {}", member);
 		
 		String replaceFileName = null;
 		

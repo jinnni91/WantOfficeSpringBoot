@@ -35,16 +35,16 @@ public class MemberController {
 	}
 
 	// 내 정보 조회
-	@GetMapping("/member/{memberNo}")
-	public ResponseEntity<ResponseDTO> selectMyInfo(@PathVariable Long memberNo) {
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "내 정보 조회 성공", memberService.selectMyInfo(memberNo)));
+	@GetMapping("/member")
+	public ResponseEntity<ResponseDTO> selectMyInfo(@AuthenticationPrincipal MemberDTO member) {
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "내 정보 조회 성공", memberService.selectMyInfo(member)));
 	}
 	
 	// 내 정보 수정
-	@PutMapping("/member/{memberNo}")
-	public ResponseEntity<ResponseDTO> updateMyInfo(@ModelAttribute MemberDTO memberDto, @PathVariable Long memberNo) {
-		memberDto.setMemberNo(memberNo);
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "내 정보 수정 성공", memberService.updateMyInfo(memberDto)));
+	@PutMapping("/member")
+	public ResponseEntity<ResponseDTO> updateMyInfo(@ModelAttribute MemberDTO memberDto, @AuthenticationPrincipal MemberDTO member) {
+		
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "내 정보 수정 성공", memberService.updateMyInfo(memberDto, member)));
 	}
 	
 	/* 내 명함 조회 */

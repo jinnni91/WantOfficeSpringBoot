@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "TBL_POSITION")
-@SequenceGenerator(name = "POSITION_SEQ_GENERATOR", sequenceName = "SEQ_POSITION_NO", initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = "POSITION_SEQ_GENERATOR", sequenceName = "SEQ_POSITION_NO", initialValue = 11, allocationSize = 1)
 @DynamicInsert
 public class Position {
 	

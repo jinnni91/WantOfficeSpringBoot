@@ -4,6 +4,7 @@ package com.project.office.dept.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +37,13 @@ public class DeptController {
 	public ResponseEntity<ResponseDTO> deptList() {
 		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "부서 목록 조회 완료", deptService.deptList()));
+	}
+	
+	// 부서 상세 조회
+	@GetMapping("/list/{deptNo}")
+	public ResponseEntity<ResponseDTO> selectDeptDetail(@PathVariable Long deptNo) {
+		
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "부서 정보 조회 완료", deptService.selectDeptDetail(deptNo)));
 	}
 	
 	// 부서 수정

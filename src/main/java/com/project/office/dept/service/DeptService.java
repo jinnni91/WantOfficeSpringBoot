@@ -82,5 +82,13 @@ public class DeptService {
 		log.info("[DeptService] deleteDept End ===========================");
 		return deptDto;
 	}
+
+	// 부서 상세 조회
+	public Object selectDeptDetail(Long deptNo) {
+		
+		DeptDTO deptDto = modelMapper.map(deptRepository.findById(deptNo)
+				.orElseThrow(() -> new RuntimeException("존재하지 않는 부서입니다.")), DeptDTO.class);
+		return deptDto;
+	}
 	
 }

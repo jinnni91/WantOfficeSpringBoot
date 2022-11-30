@@ -37,7 +37,7 @@ public class AuthController {
 		
 		authService.signup(memberDto);
 		memberDto.setMemberImage(null);
-				
+		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.CREATED, "사원 등록이 완료되었습니다.", memberDto));
 	}
 	
