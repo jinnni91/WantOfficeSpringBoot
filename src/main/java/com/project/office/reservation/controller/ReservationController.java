@@ -42,7 +42,7 @@ public class ReservationController {
 	}
 	
 	/* 1. 예약 조회(회원) */
-	@GetMapping("/rvlist-management/{roomNo}")
+	@GetMapping("/rvlist-management")
 	public ResponseEntity<ResponseDTO> selectReservationMList(@RequestParam(name= "page", defaultValue="1")int page){
 
 		
@@ -61,26 +61,26 @@ public class ReservationController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 리스트 조회 성공", responseDTOWithPaging));
 	}
 	
-	/* 2. 예약 목록 조회 - 검색[예약중 / 예약 가능/ 예약 취소]*/
-	@GetMapping("/rvlists/search")
-	public ResponseEntity<ResponseDTO> selectSearchList(@RequestParam(name= "page", defaultValue="1")int page, @RequestParam(name="search") String reservationStatus){
-		log.info("[ReservationController] selectSearchList start ============ ");
-		log.info("[ReservationController] page: {} ", page);
-		log.info("[ReservationController] reservationStatus : {}", reservationStatus);
-		
-		Page<ReservationDTO> reservationDTOList = reservationService.selectReservationListByReservationStatus(page, reservationStatus);
-		
-		PagingButton pageBtn = pagenation.getPagingButton(reservationDTOList);
-		log.info("[ReservationController] pageBtn : {}", pageBtn);
-		
-		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
-		responseDTOWithPaging.setPageBtn(pageBtn);
-		responseDTOWithPaging.setData(reservationDTOList.getContent());
-		
-		log.info("[ReservationController] selectSearchList End ============ ");
-		
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 리스트 조회 성공", responseDTOWithPaging));
-	}
+//	/* 2. 예약 목록 조회 - 검색[예약중 / 예약 가능/ 예약 취소]*/
+//	@GetMapping("/rvlists/search")
+//	public ResponseEntity<ResponseDTO> selectSearchList(@RequestParam(name= "page", defaultValue="1")int page, @RequestParam(name="search") String reservationStatus){
+//		log.info("[ReservationController] selectSearchList start ============ ");
+//		log.info("[ReservationController] page: {} ", page);
+//		log.info("[ReservationController] reservationStatus : {}", reservationStatus);
+//		
+//		Page<ReservationDTO> reservationDTOList = reservationService.selectReservationListByReservationStatus(page, reservationStatus);
+//		
+//		PagingButton pageBtn = pagenation.getPagingButton(reservationDTOList);
+//		log.info("[ReservationController] pageBtn : {}", pageBtn);
+//		
+//		ResponseDTOWithPaging responseDTOWithPaging = new ResponseDTOWithPaging();
+//		responseDTOWithPaging.setPageBtn(pageBtn);
+//		responseDTOWithPaging.setData(reservationDTOList.getContent());
+//		
+//		log.info("[ReservationController] selectSearchList End ============ ");
+//		
+//		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 리스트 조회 성공", responseDTOWithPaging));
+//	}
 	
 	/* 3. 예약조회(공통) */
 	
