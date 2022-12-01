@@ -41,7 +41,7 @@ public class ReservationService {
 	@Value("${image.image-url}")
 	private String IMAGE_URL;
 	
-	/* 1. 회의실 예약 전체 목록 조회(회원) */
+	/* 1. 회의실 예약 전체 목록 조회(관리자) */
 	public Page<ReservationDTO> selectReservationMList(int page) {
 		log.info("[ReservationService] selectReservationList start============");
 		
@@ -57,21 +57,21 @@ public class ReservationService {
 		return reservationDTOList;
 	}
 	
-	/* 2. 예약 목록 조회 - 검색[예약중 / 예약 가능/ 예약 취소]*/
-	public Page<ReservationDTO> selectReservationListByReservationStatus(int page, String reservationStatus) {
-		log.info("[ReservationService] selectReservationListByReservationDate start============");
-		
-		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("reservationNo").descending());
-		
-		Page<Reservation> reservationList = reservationRepository.findByReservationStatus(pageable, reservationStatus );
-		Page<ReservationDTO> reservationDTOList = reservationList.map(reservation -> modelMapper.map(reservation, ReservationDTO.class));
-		
-		log.info("[ReservationService] ReservationDTOList : {}", reservationDTOList.getContent());
-		
-		log.info("[ReservationService] selectReservationListByReservationDate end ============");
-		
-		return reservationDTOList;
-	}
+//	/* 2. 예약 목록 조회 - 검색[예약중 / 예약 가능/ 예약 취소]*/
+//	public Page<ReservationDTO> selectReservationListByReservationStatus(int page, String reservationStatus) {
+//		log.info("[ReservationService] selectReservationListByReservationDate start============");
+//		
+//		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("reservationNo").descending());
+//		
+//		Page<Reservation> reservationList = reservationRepository.findByReservationStatus(pageable, reservationStatus );
+//		Page<ReservationDTO> reservationDTOList = reservationList.map(reservation -> modelMapper.map(reservation, ReservationDTO.class));
+//		
+//		log.info("[ReservationService] ReservationDTOList : {}", reservationDTOList.getContent());
+//		
+//		log.info("[ReservationService] selectReservationListByReservationDate end ============");
+//		
+//		return reservationDTOList;
+//	}
 	
 	/* 3. 회의실 예약 상세 조회(회원)*/
 	public ReservationDTO selectReservationListForAdmin(Long reservationNo) {
@@ -115,7 +115,7 @@ public class ReservationService {
 	public ReservationDTO insertReservation(ReservationDTO reservationDTO) {
 		log.info("[ReservationService] insertReservation start============");
 		log.info("[ReservationService] reservationDTO : {}",reservationDTO );
-		
+//		reservationRepository.save(modelMapper.map(reservationDTO, reservation.class));
 		log.info("[ReservationService] insertReservation End============");
 		return reservationDTO;
 	}
@@ -137,7 +137,8 @@ public class ReservationService {
 				reservationDTO.getReservationSetting(),
 				reservationDTO.getRoom(),
 				reservationDTO.getMember(),
-				reservationDTO.getReservationTime());
+				reservationDTO.getReservationTimeIn(),
+				reservationDTO.getReservationTimeOut());
 
 		reservationRepository.save(oriReservation);
 		

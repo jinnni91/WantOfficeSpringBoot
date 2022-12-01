@@ -22,7 +22,8 @@ public class ReservationDTO {
 	private String reservationSetting;
 	private Room room;
 	private Member member;
-	private String reservationTime;
+	private String reservationTimeIn;
+	private String reservationTimeOut;
 	
 	private MultipartFile roomImage;
 	
