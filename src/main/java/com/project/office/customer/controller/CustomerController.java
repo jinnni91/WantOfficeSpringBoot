@@ -80,14 +80,6 @@ public class CustomerController {
 		
 	}
 	
-	/* 거래처 명함 상세 조회 */
-	@GetMapping("/customer/{customerNo}")
-	public ResponseEntity<ResponseDTO> selectCustomer(@PathVariable Long customerNo) {
-		
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "거래처 명함 상세 조회 완료", customerSerive.selectCustomer(customerNo)));
-		
-	}
-	
 	/* 거래처 명함 삭제 */
 	@PatchMapping("/customer/delete/{customerNo}")
 	public ResponseEntity<ResponseDTO> deleteCustomer(@AuthenticationPrincipal MemberDTO member, @PathVariable Long customerNo, @RequestBody CustomerDTO customerDTO) {
