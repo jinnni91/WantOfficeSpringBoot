@@ -2,7 +2,7 @@ package com.project.office.reservation.dto;
 
 import java.time.LocalDateTime;
 
-import org.springframework.web.multipart.MultipartFile;
+
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.office.member.entity.Member;
@@ -25,8 +25,6 @@ public class ReservationDTO {
 	private String reservationTimeIn;
 	private String reservationTimeOut;
 	
-	private MultipartFile roomImage;
-	
-	private String roomImageUrl;
+
 	
 }
