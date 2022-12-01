@@ -82,23 +82,7 @@ public class CustomerService {
 		return customerDTO;
 		
 	}
-
-	/* 거래처 명함 상세 조회 */
-	public CustomerDTO selectCustomer(Long customerNo) {
-		
-		log.info("[CustomerService] selectCustomer Start ===========");
-		log.info("[CustomerService] customerNo : {}", customerNo);
-		
-		Customer customer = customerRepository.findById(customerNo)
-				.orElseThrow(() -> new RuntimeException("해당 거래처가 존재하지 않습니다."));
-		CustomerDTO customerDTO = modelMapper.map(customer, CustomerDTO.class);
-		
-		log.info("[CustomerService] selectCustomer End ===========");
-		
-		return customerDTO;
-		
-	}
-
+	
 	/* 거래처 명함 삭제 */
 	public CustomerDTO deleteCustomer(MemberDTO member, Long customerNo, CustomerDTO customerDTO) {
 		
