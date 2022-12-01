@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.project.office.auth.entity.Auth;
+import com.project.office.dept.entity.Dept;
 import com.project.office.exception.DuplicatedUsernameException;
 import com.project.office.exception.UserNotFoundException;
 import com.project.office.member.dto.MemberDTO;
@@ -54,12 +56,7 @@ public class AuthService {
 		log.info("[AuthService] memberDto : {}", memberDto);
 		String imageName = UUID.randomUUID().toString().replace("-","");
 		String replaceFileName = null;
-		
-//		if(memberRepository.findByMemberEmail(memberDto.getMemberEmail()) != null) {
-//			log.info("[AuthService] 중복된 이메일입니다.");
-//			throw new DuplicatedUsernameException("중복된 이메일입니다.");
-//		} 
-		
+
 		if(memberDto.getMemberImage() != null) {
 			try {
 				replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR, imageName, memberDto.getMemberImage());
@@ -91,15 +88,17 @@ public class AuthService {
 		
 
 	// 전체 사원 목록 조회
-	public Page<MemberDTO> memberInfoList(int page) {
+	public Page<MemberDTO> memberInfoList(MemberDTO memberDto, int page) {
 		log.info("[AuthService] memberInfoList Start ===========================");
 		
 		Pageable pageable = PageRequest.of(page - 1, 10, Sort.by("memberNo").descending());
 		
-		Page<Member> memberList = memberRepository.findAll(pageable);
+		Long memberNo = memberDto.getMemberNo();
+		
+		Page<Member> memberList = memberRepository.findAllWithoutAdmin(memberNo, pageable);
 		Page<MemberDTO> memberDtoList = memberList.map(member -> modelMapper.map(member, MemberDTO.class));
 		
-		log.info("[AuthService] memberDtoList : {}", memberDtoList.getContent());
+		log.info("[AuthService] memberDtoList : {}", memberDtoList);
 		log.info("[AuthService] memberInfoList End ===========================");
 		
 		return memberDtoList;
@@ -118,5 +117,91 @@ public class AuthService {
 		log.info("[AuthService] selectMemberInfoDetail End ===========================");
 		return modelMapper.map(member, MemberDTO.class);
 	}
+	
+	// 사원 정보 수정
+	@Transactional
+	public MemberDTO updateMember(MemberDTO memberDto, Long memberNo) {
+		log.info("[AuthService] updateMember Start ===========================");
+		log.info("[AuthService] memberDto : {}", memberDto);
+		
+		String replaceFileName = null;
+		
+		try {
+			Member oriMember = memberRepository.findById(memberDto.getMemberNo()).orElseThrow(
+					() ->  new IllegalArgumentException("해당 사원이 존재하지 않습니다. memberNo=" + memberDto.getMemberNo()));
+			String oriFile = oriMember.getMemberFileUrl();
+			
+			if(memberDto.getMemberImage() != null) {
+				String fileName = UUID.randomUUID().toString().replace("-", "");
+				replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR, fileName, memberDto.getMemberImage());
+				memberDto.setMemberFileUrl(replaceFileName);
+				
+				FileUploadUtils.deleteFile(IMAGE_DIR, oriFile);
+			} else {
+				memberDto.setMemberFileUrl(oriFile);
+			}
+			
+			oriMember.updateMember(
+					memberDto.getMemberId(),
+					memberDto.getMemberName(),
+					memberDto.getMemberPhone(),
+					memberDto.getMemberEmail(),
+					modelMapper.map(memberDto.getPosition(), Position.class),
+					modelMapper.map(memberDto.getDept(), Dept.class),
+					modelMapper.map(memberDto.getAuth(), Auth.class),
+					memberDto.getMemberFileUrl()
+					);
+			memberRepository.save(oriMember);
+		} catch (IOException e) {
+			e.printStackTrace();
+			try {
+				FileUploadUtils.deleteFile(IMAGE_DIR, replaceFileName);
+			}catch (IOException e1) {
+				e.printStackTrace();
+			}
+		}
+		
+		log.info("[MemberService] updateMyInfo End ===========");
+		return memberDto;
+	}
+
+	// 사원 비활성화
+	public Object deleteMember(MemberDTO memberDto, Long memberNo) {
+		log.info("[AuthService] deleteMember Start ===========================");
+		log.info("[AuthService] memberDto : {}", memberDto);
+		
+		String replaceFileName = null;
+		
+		try {
+			Member oriMember = memberRepository.findById(memberDto.getMemberNo()).orElseThrow(
+					() ->  new IllegalArgumentException("해당 사원이 존재하지 않습니다. memberNo=" + memberDto.getMemberNo()));
+			String oriFile = oriMember.getMemberFileUrl();
+			
+			if(memberDto.getMemberImage() != null) {
+				String fileName = UUID.randomUUID().toString().replace("-", "");
+				replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR, fileName, memberDto.getMemberImage());
+				memberDto.setMemberFileUrl(replaceFileName);
+				
+				FileUploadUtils.deleteFile(IMAGE_DIR, oriFile);
+			} else {
+				memberDto.setMemberFileUrl(oriFile);
+			}
+			
+			oriMember.setMemberStatus("N");			
+			memberRepository.save(oriMember);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			try {
+				FileUploadUtils.deleteFile(IMAGE_DIR, replaceFileName);
+			}catch (IOException e1) {
+				e.printStackTrace();
+			}
+		}
+		
+		log.info("[MemberService] updateMyInfo End ===========");
+		return memberDto;
+	}
+	
 
 }

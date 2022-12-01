@@ -74,13 +74,23 @@ public class Member {
 	private String memberFileUrl;
 
 	
-	public void update(String memberPassword, String memberName, String memberPhone, String memberEmail,
-			String memberFileUrl) {
-		this.memberPassword = memberPassword;
-		this.memberName = memberName;
+	public void update(String memberPhone, String memberEmail, String memberFileUrl) {
 		this.memberPhone = memberPhone;
 		this.memberEmail = memberEmail;
 		this.memberFileUrl = memberFileUrl;
+	}
+	
+	public void updateMember(String memberId, String memberName, String memberPhone,
+			String memberEmail, Position position, Dept dept, Auth auth, String memberFileUrl) {
+		this.memberId = memberId;
+		this.memberName = memberName;
+		this.memberPhone = memberPhone;
+		this.memberEmail = memberEmail;
+		this.position = position;
+		this.dept = dept;
+		this.auth = auth;
+		this.memberFileUrl = memberFileUrl;
+		
 	}
 	
 	public void updateForCard(String memberName, String memberPhone, String memberEmail) {
@@ -90,5 +100,7 @@ public class Member {
 		this.memberEmail = memberEmail;
 		
 	}
+
+	
 	
 }

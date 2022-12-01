@@ -76,4 +76,6 @@ public class MemberDTO implements UserDetails {
 			
 			return true;
 		}
+
+		
 }

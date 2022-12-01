@@ -46,6 +46,12 @@ public class MemberController {
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "내 정보 수정 성공", memberService.updateMyInfo(memberDto, member)));
 	}
 	
+	// 비밀번호 변경
+	@PutMapping("/member/updatePwd")
+	public ResponseEntity<ResponseDTO> updateMyPwd(@RequestBody MemberDTO memberDto) {
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "비밀번호 변경 완료", memberService.updateMyPwd(memberDto)));
+	}
+	
 	/* 내 명함 조회 */
 	@GetMapping("/card")
 	public ResponseEntity<ResponseDTO> selectMyCard(@AuthenticationPrincipal MemberDTO member) {

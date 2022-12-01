@@ -122,8 +122,6 @@ public class MemberService {
 			}
 			
 			oriMember.update(
-					memberDto.getMemberPassword(),
-					memberDto.getMemberName(),
 					memberDto.getMemberPhone(),
 					memberDto.getMemberEmail(),
 					memberDto.getMemberFileUrl()
@@ -139,6 +137,18 @@ public class MemberService {
 		}
 		
 		log.info("[MemberService] updateMyInfo End ===========");
+		return memberDto;
+	}
+	
+	// 비밀번호 변경
+	@Transactional
+	public Object updateMyPwd(MemberDTO memberDto) {
+		
+		if(passwordEncoder.matches(memberDto.getMemberPassword(), memberDto.getMemberPassword())) { 
+			memberDto.setMemberPassword(passwordEncoder.encode(memberDto.getMemberPassword()));
+			memberRepository.save(modelMapper.map(memberDto, Member.class));
+		}
+		
 		return memberDto;
 	}
 	
@@ -222,5 +232,7 @@ public class MemberService {
 		return modelMapper.map(member, MemberDTO.class);
 		
 	}
+
+	
 
 }
