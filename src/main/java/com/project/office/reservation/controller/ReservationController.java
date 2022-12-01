@@ -7,13 +7,13 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,10 +23,7 @@ import com.project.office.common.paging.PagingButton;
 import com.project.office.common.paging.ResponseDTOWithPaging;
 import com.project.office.common.paging.pagenation;
 import com.project.office.reservation.dto.ReservationDTO;
-import com.project.office.reservation.entity.Reservation;
 import com.project.office.reservation.service.ReservationService;
-import com.project.office.room.dto.RoomDTO;
-import com.project.office.room.entity.Room;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -111,13 +108,13 @@ public class ReservationController {
 	
 	/* 4. 예약 등록 (회원) */
 	@PostMapping("/rvlists")
-	public ResponseEntity<ResponseDTO> insertReservation(@ModelAttribute ReservationDTO reservationDTO) {
+	public ResponseEntity<ResponseDTO> insertReservation(@RequestBody ReservationDTO reservationDTO) {
 		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 등록 성공", reservationService.insertReservation(reservationDTO)));
 	}
 	
 	/* 5. 예약 수정 (회원) */
-	@PutMapping("/rvlists")
+	@PutMapping("/rvlists-managements")
 	public ResponseEntity<ResponseDTO> updateReservation(@ModelAttribute ReservationDTO reservationDTO) {
 		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 수정 성공", reservationService.updateReservation(reservationDTO)));
