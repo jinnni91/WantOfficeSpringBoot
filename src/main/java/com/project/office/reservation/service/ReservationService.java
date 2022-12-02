@@ -1,5 +1,6 @@
 package com.project.office.reservation.service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,8 +15,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
+import com.project.office.member.dto.MemberDTO;
+import com.project.office.member.entity.Member;
 import com.project.office.reservation.dto.ReservationDTO;
 import com.project.office.reservation.entity.Reservation;
 import com.project.office.reservation.repository.ReservationRepository;
@@ -112,10 +116,13 @@ public class ReservationService {
 
 	/* 4. 회의실 예약 등록 (회원) */
 	@Transactional
-	public ReservationDTO insertReservation(ReservationDTO reservationDTO) {
+	public ReservationDTO insertReservation(ReservationDTO reservationDTO, @AuthenticationPrincipal Member memberNo) {
 		log.info("[ReservationService] insertReservation start============");
-		log.info("[ReservationService] reservationDTO : {}",reservationDTO );
-//		reservationRepository.save(modelMapper.map(reservationDTO, reservation.class));
+		log.info("[ReservationService] reservationDTO : {}", reservationDTO );
+		
+		reservationDTO.setMember(memberNo);
+		reservationRepository.save(modelMapper.map(reservationDTO, Reservation.class));
+		
 		log.info("[ReservationService] insertReservation End============");
 		return reservationDTO;
 	}

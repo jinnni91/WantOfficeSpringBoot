@@ -7,9 +7,10 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+//import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,6 +23,8 @@ import com.project.office.common.ResponseDTO;
 import com.project.office.common.paging.PagingButton;
 import com.project.office.common.paging.ResponseDTOWithPaging;
 import com.project.office.common.paging.pagenation;
+import com.project.office.member.dto.MemberDTO;
+import com.project.office.member.entity.Member;
 import com.project.office.reservation.dto.ReservationDTO;
 import com.project.office.reservation.service.ReservationService;
 
@@ -87,7 +90,7 @@ public class ReservationController {
 		log.info("[ReservationController] selectReservationList start=========");
 		log.info("[ReservationController] room : {}", roomNo);
 		
-		List<ReservationDTO> reservation = reservationService.selectReservationList(roomNo);
+		//List<ReservationDTO> reservation = reservationService.selectReservationList(roomNo);
 		
 		log.info("[ReservationController] selectReservationList end=========");
 		
@@ -107,15 +110,19 @@ public class ReservationController {
 	}
 	
 	/* 4. 예약 등록 (회원) */
-	@PostMapping("/rvlists")
-	public ResponseEntity<ResponseDTO> insertReservation(@RequestBody ReservationDTO reservationDTO) {
+	
+	@PostMapping("/rvlists-in/{roomNo}")
+	public ResponseEntity<ResponseDTO> insertReservation(@AuthenticationPrincipal Member memberNo,@RequestBody ReservationDTO reservationDTO, @PathVariable Long roomNo) {
 		
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 등록 성공", reservationService.insertReservation(reservationDTO)));
+		reservationDTO.setMember(memberNo);
+		
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 등록 성공", reservationService.insertReservation(reservationDTO, memberNo)));
 	}
+	
 	
 	/* 5. 예약 수정 (회원) */
 	@PutMapping("/rvlists-managements")
-	public ResponseEntity<ResponseDTO> updateReservation(@ModelAttribute ReservationDTO reservationDTO) {
+	public ResponseEntity<ResponseDTO> updateReservation(ReservationDTO reservationDTO) {
 		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 수정 성공", reservationService.updateReservation(reservationDTO)));
 	}

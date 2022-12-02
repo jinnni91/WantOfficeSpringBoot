@@ -1,7 +1,6 @@
 package com.project.office.reservation.entity;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
 
 import com.project.office.member.entity.Member;
 import com.project.office.room.entity.Room;
@@ -30,6 +30,7 @@ import lombok.Setter;
 					sequenceName = "SEQ_RESERVATION_NO",
 					initialValue = 9,
 					allocationSize = 1)
+@DynamicInsert
 public class Reservation {
 
 	@Id
