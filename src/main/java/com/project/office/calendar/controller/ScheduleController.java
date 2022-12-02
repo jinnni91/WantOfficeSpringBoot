@@ -33,7 +33,7 @@ public class ScheduleController {
 	@GetMapping("/calendar")
 	public ResponseEntity<ResponseDTO> scheduleList (@AuthenticationPrincipal MemberDTO member) {
 		
-		log.info("[ScheduleController] schedeuleSort : {} ", member );
+//		log.info("[ScheduleController] schedeuleSort : {} ", member );
 		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "캘린더 조회 성공", scheduleService.scheduleList(member)));
 	}
@@ -47,9 +47,12 @@ public class ScheduleController {
 	}
 	
 	@PostMapping("/calendar")
-	public ResponseEntity<ResponseDTO> insertSchedule (@ModelAttribute ScheduleDTO scheduleDTO) {
+	public ResponseEntity<ResponseDTO> insertSchedule (@AuthenticationPrincipal MemberDTO member, @ModelAttribute ScheduleDTO scheduleDTO) {
 		
-//		log.info("[ScheduleController] scheduleDTO : {} ", scheduleDTO);
+		scheduleDTO.setMember(member);
+		scheduleDTO.setDept(member.getDept());
+		
+		log.info("[ScheduleController] scheduleDTO : {} ", scheduleDTO);
 		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "일정 입력 성공", scheduleService.insertSchedule(scheduleDTO)));
 	}
@@ -59,11 +62,15 @@ public class ScheduleController {
 		
 		scheduleDTO.setMember(member);
 		
+//		log.info("[ScheduleController] scheduleDTO : {} ", scheduleDTO );
+		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "일정 수정 성공", scheduleService.updateSchedule(scheduleDTO)));
 	}
 	
-	@DeleteMapping("/calendar")
-	public ResponseEntity<ResponseDTO> deleteSchedule (Long scheduleNo) {
+	@DeleteMapping("/calendar/{scheduleNo}")
+	public ResponseEntity<ResponseDTO> deleteSchedule (@PathVariable Long scheduleNo) {
+		
+//		log.info("[ScheduleController] scheduleNo : {}", scheduleNo);
 		
 		scheduleService.deleteSchedule(scheduleNo);
 		

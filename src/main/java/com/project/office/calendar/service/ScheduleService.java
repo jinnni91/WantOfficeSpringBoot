@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import com.project.office.calendar.dto.ScheduleDTO;
@@ -52,13 +53,16 @@ public class ScheduleService {
 		
 //		log.info("[ScheduleService] schedule : {} ", schedule );
 		
+		schedule.setScheduleStart((schedule.getScheduleStart()).substring(0, 10));
+		schedule.setScheduleEnd((schedule.getScheduleEnd()).substring(0, 10));
+		
 		return modelMapper.map(schedule, ScheduleDTO.class);
 	}
 	
 	@Transactional
 	public ScheduleDTO insertSchedule(ScheduleDTO scheduleDTO) {
 
-//		log.info("[ScheduleService] schedule : {} ", scheduleDTO );
+		log.info("[ScheduleService] schedule : {} ", scheduleDTO );
 		
 		scheduleRepository.save(modelMapper.map(scheduleDTO, Schedule.class));
 		
@@ -80,10 +84,9 @@ public class ScheduleService {
 				scheduleDTO.getScheduleSort(),
 				scheduleDTO.getScheduleColor(),
 				scheduleDTO.getSchedulePlace(),
-				scheduleDTO.getScheduleContent(),
-				modelMapper.map(scheduleDTO.getDept(), Dept.class));
+				scheduleDTO.getScheduleContent());
 		
-		log.info("[ScheduleService] scheduleDTO : {}", newSchedule);
+		log.info("[ScheduleService] newSchedule : {}", newSchedule);
 		
 		scheduleRepository.save(newSchedule);
 		
