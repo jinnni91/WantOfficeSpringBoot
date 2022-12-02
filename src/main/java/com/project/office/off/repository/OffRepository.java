@@ -15,25 +15,16 @@ public interface OffRepository extends JpaRepository<Off, Long> {
 
 	/* 연차 조회 */
 	@EntityGraph(attributePaths= {"member"})
-	@Query("SELECT o " + 
-			 "FROM Off o " +
-			"WHERE o.member.memberNo = :memberNo"
-			)
+	@Query("select o from Off o where o.member.memberNo = :memberNo")
 	Page<Off> findByMember(@Param("memberNo") Long memberNo, Pageable pageable);
 
 	/* 결과별 연차 신청 목록 조회(결재권자) */
-	@Query("SELECT o " +
-			 "FROM Off o " +
-			"WHERE o.offResult = :offResult and o.member.dept.deptNo = :deptNo"
-			)
+	@Query("select o from Off o where o.offResult = :offResult and o.member.dept.deptNo = :deptNo")
 	Page<Off> findByOffResult(@Param("deptNo") Long deptNo, @Param("offResult") String offResult, Pageable pageable);
 
 	/* 연차 수정을 위한 조회 */
 	@EntityGraph(attributePaths= {"member"})
-	@Query("SELECT o " + 
-			 "FROM Off o " +
-			"WHERE o.member.memberNo = :memberNo and o.offNo = :offNo"
-			)
+	@Query("select o from Off o where o.member.memberNo = :memberNo and o.offNo = :offNo")
 	Optional<Off> findByMemberAndOffNo(@Param("memberNo") Long memberNo, @Param("offNo") Long offNo);
 
 }
