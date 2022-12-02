@@ -112,7 +112,7 @@ public class ReservationController {
 	/* 4. 예약 등록 (회원) */
 	
 	@PostMapping("/rvlists-in/{roomNo}")
-	public ResponseEntity<ResponseDTO> insertReservation(@AuthenticationPrincipal Member memberNo,@RequestBody ReservationDTO reservationDTO, @PathVariable Long roomNo) {
+	public ResponseEntity<ResponseDTO> insertReservation(@AuthenticationPrincipal Member memberNo, @RequestBody ReservationDTO reservationDTO, Long roomNo) {
 		
 		reservationDTO.setMember(memberNo);
 		
