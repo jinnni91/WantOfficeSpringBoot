@@ -40,7 +40,7 @@ public class MemberController {
 	}
 	
 	// 내 정보 수정
-	@PutMapping("/member")
+	@PatchMapping("/member")
 	public ResponseEntity<ResponseDTO> updateMyInfo(@ModelAttribute MemberDTO memberDto, @AuthenticationPrincipal MemberDTO member) {
 		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "내 정보 수정 성공", memberService.updateMyInfo(memberDto, member)));
