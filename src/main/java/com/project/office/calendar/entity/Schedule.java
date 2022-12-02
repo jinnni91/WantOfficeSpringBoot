@@ -74,7 +74,7 @@ public class Schedule {
 	private Dept dept;
 	
 	public void update(String scheduleTitle, String scheduleStart, String scheduleEnd,
-			String scheduleSort, String scheduleColor, String schedulePlace, String scheduleContent, Dept dept) {
+			String scheduleSort, String scheduleColor, String schedulePlace, String scheduleContent) {
 		
 		this.scheduleTitle = scheduleTitle;
 		this.scheduleStart = scheduleStart;
@@ -83,7 +83,6 @@ public class Schedule {
 		this.scheduleColor = scheduleColor;
 		this.schedulePlace = schedulePlace;
 		this.scheduleContent = scheduleContent;
-		this.dept = dept;
 		this.scheduleUpd = LocalDate.now().toString();
 	}
 
