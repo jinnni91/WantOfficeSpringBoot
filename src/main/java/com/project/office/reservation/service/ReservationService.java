@@ -116,7 +116,7 @@ public class ReservationService {
 
 	/* 4. 회의실 예약 등록 (회원) */
 	@Transactional
-	public ReservationDTO insertReservation(ReservationDTO reservationDTO, @AuthenticationPrincipal Member memberNo) {
+	public ReservationDTO insertReservation(ReservationDTO reservationDTO, Member memberNo) {
 		log.info("[ReservationService] insertReservation start============");
 		log.info("[ReservationService] reservationDTO : {}", reservationDTO );
 		
