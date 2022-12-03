@@ -67,16 +67,13 @@ public class Reservation {
 	@Column(name = "RESERVATION_TIME_OUT")
 	private String reservationTimeOut;
 
-	public void update(Long reservationNo, Integer reservationUseTime , String reservationStatus,
-			String reservationPurpose, String reservationSetting,Room room, Member member, String reservationTimeIn, String reservationTimeOut) {
+	public void update(Integer reservationUseTime , String reservationStatus,
+			String reservationPurpose, String reservationSetting, String reservationTimeIn, String reservationTimeOut) {
 		
-		this.reservationNo = reservationNo;
 		this.reservationUseTime = reservationUseTime;
 		this.reservationStatus = reservationStatus;
 		this.reservationPurpose = reservationPurpose;
 		this.reservationSetting = reservationSetting;
-		this.room = room;
-		this.member = member;
 		this.reservationTimeIn = reservationTimeIn;
 		this.reservationTimeOut = reservationTimeOut;
 		

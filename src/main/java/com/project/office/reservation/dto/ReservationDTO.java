@@ -2,13 +2,10 @@ package com.project.office.reservation.dto;
 
 
 import java.time.LocalDateTime;
-//import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.office.member.dto.MemberDTO;
-//import com.fasterxml.jackson.annotation.JsonFormat;
-import com.project.office.member.entity.Member;
-import com.project.office.room.entity.Room;
+import com.project.office.room.dto.RoomDTO;
 
 import lombok.Data;
 
@@ -22,7 +19,7 @@ public class ReservationDTO {
 	private String reservationStatus;
 	private String reservationPurpose;
 	private String reservationSetting;
-	private Room room;
+	private RoomDTO room;
 	private MemberDTO member;
 	private String reservationTimeIn;
 	private String reservationTimeOut;
