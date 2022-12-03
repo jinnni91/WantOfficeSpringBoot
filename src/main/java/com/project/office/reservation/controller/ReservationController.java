@@ -112,20 +112,20 @@ public class ReservationController {
 	/* 4. 예약 등록 (회원) */
 	
 	@PostMapping("/rvlists-in/{roomNo}")
-	public ResponseEntity<ResponseDTO> insertReservation(@AuthenticationPrincipal Member memberNo, @RequestBody ReservationDTO reservationDTO, Long roomNo) {
+	public ResponseEntity<ResponseDTO> insertReservation(@AuthenticationPrincipal MemberDTO member, @RequestBody ReservationDTO reservationDTO, Long roomNo) {
 		
-		reservationDTO.setMember(memberNo);
+		reservationDTO.setMember(member);
 		
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 등록 성공", reservationService.insertReservation(reservationDTO, memberNo)));
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 등록 성공", reservationService.insertReservation(reservationDTO)));
 	}
 	
 	
-	/* 5. 예약 수정 (회원) */
-	@PutMapping("/rvlists-managements")
-	public ResponseEntity<ResponseDTO> updateReservation(ReservationDTO reservationDTO) {
-		
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 수정 성공", reservationService.updateReservation(reservationDTO)));
-	}
+//	/* 5. 예약 수정 (회원) */
+//	@PutMapping("/rvlists-managements")
+//	public ResponseEntity<ResponseDTO> updateReservation(ReservationDTO reservationDTO) {
+//		
+//		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "예약 수정 성공", reservationService.updateReservation(reservationDTO)));
+//	}
 	
 	/* 6. 예약 목록 전체 조회(관리자) */
 	@GetMapping("/rvlist-managements")
