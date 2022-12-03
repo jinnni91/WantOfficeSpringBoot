@@ -126,32 +126,30 @@ public class ReservationService {
 		return reservationDTO;
 	}
 	
-//	/* 5. 회의실 예약 수정 (회원) */
-//	@Transactional
-//	public ReservationDTO updateReservation(ReservationDTO reservationDTO) {
-//		log.info("[ReservationService] updateReservation start============");
-//		log.info("[ReservationService] reservationDTO : {}", reservationDTO);
-//		
-//		
-//		Reservation oriReservation = reservationRepository.findById(reservationDTO.getReservationNo()).orElseThrow(
-//					() -> new IllegalArgumentException("해당 예약 목록이 없습니다. reservationNo =" + reservationDTO.getReservationNo()));
-//			
-//		oriReservation.update(reservationDTO.getReservationNo(),
-//				reservationDTO.getReservationUseTime(),
-//				reservationDTO.getReservationStatus(),
-//				reservationDTO.getReservationPurpose(),
-//				reservationDTO.getReservationSetting(),
-//				reservationDTO.getRoom(),
-//				reservationDTO.getMember(),
-//				reservationDTO.getReservationTimeIn(),
-//				reservationDTO.getReservationTimeOut());
-//
-//		reservationRepository.save(oriReservation);
-//		
-//		log.info("[ReservationService] updateReservation End============");
-//		
-//		return reservationDTO;
-//	}
+	/* 5. 회의실 예약 수정 (회원) */
+	@Transactional
+	public ReservationDTO updateReservation(MemberDTO member, ReservationDTO reservationDTO) {
+		log.info("[ReservationService] updateReservation start============");
+		log.info("[ReservationService] reservationDTO : {}", reservationDTO);
+		
+		
+		Reservation oriReservation = reservationRepository.findById(reservationDTO.getReservationNo()).orElseThrow(
+					() -> new IllegalArgumentException("해당 예약 목록이 없습니다. reservationNo =" + reservationDTO.getReservationNo()));
+			
+		oriReservation.update(
+				reservationDTO.getReservationUseTime(),
+				reservationDTO.getReservationStatus(),
+				reservationDTO.getReservationPurpose(),
+				reservationDTO.getReservationSetting(),
+				reservationDTO.getReservationTimeIn(),
+				reservationDTO.getReservationTimeOut());
+
+		reservationRepository.save(oriReservation);
+		
+		log.info("[ReservationService] updateReservation End============");
+		
+		return reservationDTO;
+	}
 
 	/* 6. 회의실 예약 전체 목록 조회(관리자) */
 	public Page<ReservationDTO> selectReservationListForAdmin(int page) {
