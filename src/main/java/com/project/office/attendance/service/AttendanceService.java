@@ -110,12 +110,17 @@ public class AttendanceService {
 		oriAttendance.setAttTime(attTime);
 		
 		// 출근 시간과 퇴근 시간으로 근무유형 구하기
-		if(In != null && now != null && InHour <= 9 && InMinute < 30 && OutHour >= 17 && OutMinute >= 1) {
-			oriAttendance.setAttType("정상출근");
-		} else if(In != null && now != null && InHour > 9 && InMinute >= 30) {
+		LocalTime inTime = LocalTime.of(InHour, InMinute);
+		LocalTime outTime = LocalTime.of(OutHour, OutMinute);
+		LocalTime late = LocalTime.of(9, 30);
+		LocalTime earlyLeave = LocalTime.of(17, 00);
+		
+		if(inTime.isAfter(late)) {
 			oriAttendance.setAttType("지각");
-		} else if(In != null && now != null && OutHour <= 17 && OutMinute < 1) {
+		} else if(outTime.isBefore(earlyLeave)) {
 			oriAttendance.setAttType("조퇴");
+		} else {
+			oriAttendance.setAttType("정상출근");
 		}
 		
 		log.info("[AttendanceService] oriAttendance : {}", oriAttendance);
