@@ -120,26 +120,26 @@ public class AuthService {
 	
 	// 사원 정보 수정
 	@Transactional
-	public MemberDTO updateMember(MemberDTO memberDto, Long memberNo) {
+	public MemberDTO updateMember(MemberDTO memberDto) {
 		log.info("[AuthService] updateMember Start ===========================");
 		log.info("[AuthService] memberDto : {}", memberDto);
 		
-		String replaceFileName = null;
-		
-		try {
+//		String replaceFileName = null;
+//		
+//		try {
 			Member oriMember = memberRepository.findById(memberDto.getMemberNo()).orElseThrow(
 					() ->  new IllegalArgumentException("해당 사원이 존재하지 않습니다. memberNo=" + memberDto.getMemberNo()));
-			String oriFile = oriMember.getMemberFileUrl();
+//			String oriFile = oriMember.getMemberFileUrl();
 			
-			if(memberDto.getMemberImage() != null) {
-				String fileName = UUID.randomUUID().toString().replace("-", "");
-				replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR, fileName, memberDto.getMemberImage());
-				memberDto.setMemberFileUrl(replaceFileName);
-				
-				FileUploadUtils.deleteFile(IMAGE_DIR, oriFile);
-			} else {
-				memberDto.setMemberFileUrl(oriFile);
-			}
+//			if(memberDto.getMemberImage() != null) {
+//				String fileName = UUID.randomUUID().toString().replace("-", "");
+//				replaceFileName = FileUploadUtils.saveFile(IMAGE_DIR, fileName, memberDto.getMemberImage());
+//				memberDto.setMemberFileUrl(replaceFileName);
+//				
+//				FileUploadUtils.deleteFile(IMAGE_DIR, oriFile);
+//			} else {
+//				memberDto.setMemberFileUrl(oriFile);
+//			}
 			
 			oriMember.updateMember(
 					memberDto.getMemberId(),
@@ -149,18 +149,19 @@ public class AuthService {
 					modelMapper.map(memberDto.getPosition(), Position.class),
 					modelMapper.map(memberDto.getDept(), Dept.class),
 					modelMapper.map(memberDto.getAuth(), Auth.class),
-					memberDto.getMemberFileUrl()
+					memberDto.getMemberStatus()
+//					memberDto.getMemberFileUrl()
 					);
 			memberRepository.save(oriMember);
-		} catch (IOException e) {
-			e.printStackTrace();
-			try {
-				FileUploadUtils.deleteFile(IMAGE_DIR, replaceFileName);
-			}catch (IOException e1) {
-				e.printStackTrace();
-			}
-		}
-		
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			try {
+//				FileUploadUtils.deleteFile(IMAGE_DIR, replaceFileName);
+//			}catch (IOException e1) {
+//				e.printStackTrace();
+//			}
+//		}
+//		
 		log.info("[MemberService] updateMyInfo End ===========");
 		return memberDto;
 	}
