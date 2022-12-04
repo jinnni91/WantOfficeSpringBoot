@@ -81,7 +81,7 @@ public class Member {
 	}
 	
 	public void updateMember(String memberId, String memberName, String memberPhone,
-			String memberEmail, Position position, Dept dept, Auth auth, String memberFileUrl) {
+			String memberEmail, Position position, Dept dept, Auth auth, String memberStatus) {
 		this.memberId = memberId;
 		this.memberName = memberName;
 		this.memberPhone = memberPhone;
@@ -89,7 +89,8 @@ public class Member {
 		this.position = position;
 		this.dept = dept;
 		this.auth = auth;
-		this.memberFileUrl = memberFileUrl;
+		this.memberStatus = memberStatus;
+//		this.memberFileUrl = memberFileUrl;
 		
 	}
 	

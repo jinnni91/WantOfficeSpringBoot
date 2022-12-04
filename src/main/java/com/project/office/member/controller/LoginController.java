@@ -29,7 +29,7 @@ public class LoginController {
 	}
 	
 	// 아이디 찾기
-	@PostMapping("/find/id")
+	@PostMapping("/find")
 	public ResponseEntity<ResponseDTO> findId(@RequestBody MemberDTO memberDto) {
 		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "아이디 찾기에 성공하였습니다.", memberService.findId(memberDto)));

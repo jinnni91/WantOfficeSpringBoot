@@ -72,11 +72,11 @@ public class AuthController {
 	}
 	
 	// 사원 정보 수정 (관리자)
-	@PatchMapping("/member/update/{memberNo}")
-	public ResponseEntity<ResponseDTO> updateMember(@PathVariable Long memberNo, @ModelAttribute MemberDTO memberDto) {
+	@PatchMapping("/member/update")
+	public ResponseEntity<ResponseDTO> updateMember(@ModelAttribute MemberDTO memberDto) {
 		
 		
-		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "사원 정보 수정 완료", authService.updateMember(memberDto, memberNo)));
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "사원 정보 수정 완료", authService.updateMember(memberDto)));
 	}
 	
 	// 사원 비활성화
