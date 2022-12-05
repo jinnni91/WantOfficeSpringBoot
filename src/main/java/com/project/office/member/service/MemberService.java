@@ -73,14 +73,14 @@ public class MemberService {
 
 		
 		// 아이디 찾기
-		public String findId(MemberDTO memberDto) {
+		public MemberDTO findId(MemberDTO memberDto) {
 			log.info("[AuthService] findId Start ===========================");
 			log.info("[AuthService] memberDto : {}", memberDto);
 			
 			Member member = memberRepository.findByMemberNameAndMemberEmail(memberDto.getMemberName(), memberDto.getMemberEmail())
 					.orElseThrow(() -> new FindIdFailedException("입력하신 정보에 해당하는 아이디를 조회할 수 없습니다."));
 			
-			return member.getMemberId();
+			return modelMapper.map(member, MemberDTO.class);
 		}
 	
 	// 내 정보 조회
@@ -107,8 +107,8 @@ public class MemberService {
 		String replaceFileName = null;
 		
 		try {
-			Member oriMember = memberRepository.findById(memberDto.getMemberNo()).orElseThrow(
-					() ->  new IllegalArgumentException("해당 사원이 존재하지 않습니다. memberNo=" + memberDto.getMemberNo()));
+			Member oriMember = memberRepository.findById(member.getMemberNo()).orElseThrow(
+					() ->  new IllegalArgumentException("해당 사원이 존재하지 않습니다. memberNo=" + member.getMemberNo()));
 			String oriFile = oriMember.getMemberFileUrl();
 			
 			if(memberDto.getMemberImage() != null) {
@@ -127,6 +127,9 @@ public class MemberService {
 					memberDto.getMemberFileUrl()
 					);
 			memberRepository.save(oriMember);
+			
+			log.info("[MemberService] update : {}", modelMapper.map(oriMember, MemberDTO.class));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			try {
