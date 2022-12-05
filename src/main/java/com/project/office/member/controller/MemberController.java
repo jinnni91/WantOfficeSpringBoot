@@ -43,6 +43,9 @@ public class MemberController {
 	@PatchMapping("/member")
 	public ResponseEntity<ResponseDTO> updateMyInfo(@ModelAttribute MemberDTO memberDto, @AuthenticationPrincipal MemberDTO member) {
 		
+		log.info("[updateMyInfo] MemberDTO : {} ", memberDto);
+		log.info("[updateMyInfo] MemberDTO : {} ", member);
+		
 		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "내 정보 수정 성공", memberService.updateMyInfo(memberDto, member)));
 	}
 	
