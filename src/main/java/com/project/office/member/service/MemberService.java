@@ -218,24 +218,5 @@ public class MemberService {
 	    return memberDTOList;
 	      
 	}
-	
-	/* 내 명함 상세 조회 */
-	public MemberDTO selectMyCardDetail(MemberDTO memberDTO) {
-		
-		log.info("[MemberService] selectMyCardDetail Start ===========");
-		log.info("[MemberService] memberDTO : {}", memberDTO);
-		
-		Long memberNo = memberDTO.getMemberNo();
-		
-		Member member = memberRepository.findById(memberNo)
-				.orElseThrow(() -> new RuntimeException("해당 사원이 존재하지 않습니다."));
-		
-		log.info("[MemberService] selectMyCardDetail End ===========");
-		
-		return modelMapper.map(member, MemberDTO.class);
-		
-	}
-
-	
 
 }

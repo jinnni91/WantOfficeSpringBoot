@@ -64,7 +64,7 @@ public class OffController {
 		
 	}
 	
-	/* 연차 신청 양식에 나타낼 결재권자와 남은 연차일수 조회 */
+	/* 연차 신청 양식에 나타낼 결재권자 조회 */
 	@GetMapping("/searchApp")
 	public ResponseEntity<ResponseDTO> selectApp(@AuthenticationPrincipal MemberDTO member) {
 		
@@ -81,7 +81,7 @@ public class OffController {
 		
 		return ResponseEntity
 				.ok()
-				.body(new ResponseDTO(HttpStatus.OK, "결재권자 이름과 남은 연차일수 조회 완료", newMap));
+				.body(new ResponseDTO(HttpStatus.OK, "결재권자 이름 조회 완료", newMap));
 		
 	}
 	
@@ -166,5 +166,13 @@ public class OffController {
 		
 	}
 	
-
+	/* Calendar에서의 부서 연차조회*/
+	@GetMapping("/calendar/offs")
+	public ResponseEntity<ResponseDTO> calendarOff(@AuthenticationPrincipal MemberDTO member) {
+		
+		log.info("[OffController] member : {}", member);
+		
+		return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "캘린더 부서원 연차 조회 완료", offService.calendarOff(member.getDept().getDeptNo())));
+	}
+	
 }
