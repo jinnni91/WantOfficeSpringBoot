@@ -90,7 +90,6 @@ public class Member {
 		this.dept = dept;
 		this.auth = auth;
 		this.memberStatus = memberStatus;
-//		this.memberFileUrl = memberFileUrl;
 		
 	}
 	
