@@ -3,7 +3,7 @@
 # Project Info
 #Spring Boot #React #VSCode #Oracle SQL #Java #REST API
 
-WantOffice(워너피스)는 기업 업무 환경을 고려한 필수적인 협업 기능을 제공하는 프로그램(그룹웨어)입니다.
+**WantOffice(워너피스)** 는 기업 업무 환경을 고려한 필수적인 협업 기능을 제공하는 프로그램(그룹웨어)입니다.
 
 💼 **업무 효율성을 높히는 실시간 업무 공유**
 **💼 초보자도 사용이 쉬운 직관적인 UI**
