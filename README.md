@@ -1,8 +1,8 @@
-# wantOfficeMain
+# wantOfficeSpringBoot
 
 # Project Info
 
-**Spring Boot / React / VSCode / Oracle SQL / Java / REST API**
+**Spring Boot / React / Redux / JPA / REST API**
 
 **WantOffice(워너피스)** 는 기업 업무 환경을 고려한 필수적인 협업 기능을 제공하는 프로그램(그룹웨어)입니다.
 
