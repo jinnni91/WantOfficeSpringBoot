@@ -4,7 +4,7 @@
 
 **Spring Boot / React / Redux / JPA / REST API**
 
-application.yml 파일 추가해야 실행 가능
+# application.yml 파일 추가해야 실행 가능
 
 **WantOffice(워너피스)** 는 기업 업무 환경을 고려한 필수적인 협업 기능을 제공하는 프로그램(그룹웨어)입니다.
 
